@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+            android:id="@+id/tvActivityInterestTitle"
+            android:layout_width="match_parent"
+              android:layout_height="50dp"
+              android:text="Choose your Interesting!"
+              android:textSize="30dp"
+    />
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvActivityInterest"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tvActivityInterestTitle"
+            android:layout_above="@+id/btnActivityInterestOk"
+
+    />
+
+    <Button
+            android:id="@+id/btnActivityInterestOk"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:text="확인"
+    />
+
+
+
+</RelativeLayout>
