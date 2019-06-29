@@ -15,6 +15,5 @@ class MainActivity : AppCompatActivity() {
         Dlog.d("onCreate3")
         Dlog.d("onCreate4")
 
-
     }
 }
