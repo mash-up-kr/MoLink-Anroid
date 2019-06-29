@@ -20,5 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         Dlog.d("Make onCreate")
 
+        Dlog.d("you log")
+
     }
 }
