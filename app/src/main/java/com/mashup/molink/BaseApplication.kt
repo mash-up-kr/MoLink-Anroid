@@ -18,11 +18,6 @@ class BaseApplication: Application() {
         DEBUG = isDebuggable(this)
     }
 
-    // Zsdf
-    //add aq
-    //a
-//s
-    // ABC
     /**
      * get Debug Mode
      *
