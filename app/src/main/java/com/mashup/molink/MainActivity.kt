@@ -21,5 +21,7 @@ class MainActivity : AppCompatActivity() {
         Dlog.d("New branch Lee")
 
 
+        Dlog.d("you log")
+
     }
 }
