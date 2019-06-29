@@ -20,29 +20,23 @@ class InterestActivity : AppCompatActivity() {
         rvActivityInterest.layoutManager = GridLayoutManager(this, 3)
         rvActivityInterest.adapter = adapter
 
-        adapter.setItem(SampleData().getItem())
+        adapter.setItem(SampleData().getItem(this))
 
         btnActivityInterestOk.setOnClickListener {
             val list = ArrayList<String>()
             Dlog.e(adapter.getItem().size.toString())
 
-
-            for (i in adapter.getItem()) {
-                Dlog.d(i.toString())
-            }
-
-            //a
-            /*for((index, value) in adapter.items.withIndex()){
+            for((index, value) in adapter.items.withIndex()){
                 Dlog.d("$index : ${value.check}")
                 if(value.check){
                     list.add(value.name)
                     Dlog.e(value.name)
                 }
-            }*/
+            }
 
             var intent = Intent(this@InterestActivity, MainActivity::class.java)
-            intent.putExtra("list", list)
-            //startActivity(intent)
+            intent.putExtra("KEY_INTERESTS", list)
+            startActivity(intent)
         }
 
     }
