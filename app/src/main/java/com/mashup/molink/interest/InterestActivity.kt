@@ -32,6 +32,7 @@ class InterestActivity : AppCompatActivity() {
                 Dlog.d(i.toString())
             }
 
+            //a
             /*for((index, value) in adapter.items.withIndex()){
                 Dlog.d("$index : ${value.check}")
                 if(value.check){
