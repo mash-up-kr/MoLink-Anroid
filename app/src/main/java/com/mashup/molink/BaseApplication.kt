@@ -18,6 +18,8 @@ class BaseApplication: Application() {
         DEBUG = isDebuggable(this)
     }
 
+    // TODO: Hi2
+
     /**
      * get Debug Mode
      *

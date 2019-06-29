@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         Dlog.d("Make onCreate")
         Dlog.d("Make onCreate2")
 
+        // TODO: Hi
+
 
     }
 }
