@@ -9,7 +9,7 @@ import com.mashup.molink.BaseApplication
 
 object Dlog {
 
-    val TAG = "MyTag"
+    val TAG = "MoLink"
 
     /**
      * Log Level Error
