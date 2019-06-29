@@ -16,7 +16,10 @@ class MainActivity : AppCompatActivity() {
         Dlog.d("onCreate4")
         Dlog.d("onCreate5")
 
+        Dlog.d("onCreate5")
+
         Dlog.d("New branch Lee")
+
 
     }
 }
