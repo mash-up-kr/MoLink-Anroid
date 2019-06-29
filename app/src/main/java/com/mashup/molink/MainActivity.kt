@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         Dlog.d("Make onCreate2")
 
         // Hiß
+        // Hi2
 
 
 
