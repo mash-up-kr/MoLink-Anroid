@@ -1,27 +1,30 @@
 package com.mashup.molink.interest
 
+import android.content.Context
+import androidx.core.content.ContextCompat
+import com.mashup.molink.R
+
 class SampleData {
 
     var items = ArrayList<Interest>()
 
-    fun getItem(): ArrayList<Interest> {
+    fun getItem(context: Context): ArrayList<Interest> {
 
-        val interest1 = Interest("뷰티", false)
-        val interest2 = Interest("음악", false)
-        val interest3 = Interest("개발", false)
-        val interest4 = Interest("뷰티1", false)
-        val interest5 = Interest("음악1", false)
-        val interest6 = Interest("개발1", false)
-        val interest7 = Interest("뷰티2", false)
-        val interest8 = Interest("음악2", false)
-        val interest9 = Interest("개발2", false)
-        val interest10 = Interest("뷰티3", false)
-        val interest11 = Interest("음악3", false)
-        val interest12 = Interest("개발3", false)
-        val interest13 = Interest("뷰티4", false)
-        val interest14 = Interest("음악4", false)
-        val interest15 = Interest("개발4", false)
-
+        val interest1 = Interest("디자인", false, ContextCompat.getDrawable(context, R.drawable.img_design))
+        val interest2 = Interest("스포츠", false, ContextCompat.getDrawable(context, R.drawable.img_sports))
+        val interest3 = Interest("코스메틱", false, ContextCompat.getDrawable(context, R.drawable.img_cosmetic))
+        val interest4 = Interest("푸드", false, ContextCompat.getDrawable(context, R.drawable.img_food))
+        val interest5 = Interest("꽃", false, ContextCompat.getDrawable(context, R.drawable.img_flower))
+        val interest6 = Interest("영화", false, ContextCompat.getDrawable(context, R.drawable.img_movie))
+        val interest7 = Interest("독서", false, ContextCompat.getDrawable(context, R.drawable.img_book))
+        val interest8 = Interest("바다", false, ContextCompat.getDrawable(context, R.drawable.img_sea))
+        val interest9 = Interest("공부", false, ContextCompat.getDrawable(context, R.drawable.img_study))
+        val interest10 = Interest("디자인", false, ContextCompat.getDrawable(context, R.drawable.img_design))
+        val interest11 = Interest("디자인", false, ContextCompat.getDrawable(context, R.drawable.img_design))
+        val interest12 = Interest("디자인", false, ContextCompat.getDrawable(context, R.drawable.img_design))
+        val interest13 = Interest("디자인", false, ContextCompat.getDrawable(context, R.drawable.img_design))
+        val interest14 = Interest("디자인", false, ContextCompat.getDrawable(context, R.drawable.img_design))
+        val interest15 = Interest("디자인", false, ContextCompat.getDrawable(context, R.drawable.img_design))
 
 
 
