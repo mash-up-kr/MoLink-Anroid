@@ -1,47 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_marginBottom="17.8dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <ImageView
-            android:id="@+id/ivItemFolder"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:background="@android:color/darker_gray"/>
-
-    <TextView
-            android:id="@+id/tvItemFolderTitle"
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivItemFolder"
-            tools:text="제목"/>
+            android:layout_height="wrap_content">
 
-    <RelativeLayout
-            android:id="@+id/rlItemFolderModify"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="?attr/selectableItemBackground"
-            app:layout_constraintTop_toBottomOf="@+id/tvItemFolderTitle"
-            app:layout_constraintEnd_toEndOf="parent">
+        <ImageView
+                android:id="@+id/ivItemFolderHead"
+                android:src="@drawable/drawable_folder_head"
+                android:layout_marginStart="16.6dp"
+                android:layout_marginTop="3.6dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-                android:text="수정"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:layout_centerInParent="true"
-                android:background="@color/colorAccent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+        <ImageView
+                android:src="@drawable/drawable_folder_head_border"
+                android:layout_marginStart="16.6dp"
+                android:layout_marginTop="3.6dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-    </RelativeLayout>
+        <ImageView
+                android:id="@+id/ivItemFolder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/img_folder"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+                android:id="@+id/llItemFolderModify"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivItemFolder">
+
+            <TextView
+                    android:id="@+id/tvItemFolderTitle"
+                    android:textColor="@color/black"
+                    android:textSize="11dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    tools:text="제목"/>
+
+            <ImageView
+                    android:src="@drawable/ic_dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</RelativeLayout>

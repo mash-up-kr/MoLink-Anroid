@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mashup.molink.R
 import com.mashup.molink.model.Folder
+import com.mashup.molink.utils.Dlog
 
 class FolderAdapter : RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
 
@@ -33,7 +35,7 @@ class FolderAdapter : RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
             with(holder) {
 
                 try {
-                    ivFolder.setBackgroundColor(Color.parseColor(item.color))
+                    ivItemFolderHead.setColorFilter(Color.parseColor(item.color))
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -41,7 +43,7 @@ class FolderAdapter : RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
                 tvTitle.text = item.title
 
                 //수정 버튼
-                rlModify.setOnClickListener {
+                llModify.setOnClickListener {
                     listener?.onItemClickModify(item)
                 }
 
@@ -54,6 +56,7 @@ class FolderAdapter : RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
     }
 
     fun setItems(items: MutableList<Folder>) {
+        Dlog.d("setItems items : ${items.size}")
         this.items = items
         notifyDataSetChanged()
     }
@@ -92,8 +95,10 @@ class FolderAdapter : RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
     class FolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val ivFolder: ImageView = itemView.findViewById(R.id.ivItemFolder)
+        val ivItemFolderHead: ImageView = itemView.findViewById(R.id.ivItemFolderHead)
+
         val tvTitle: TextView = itemView.findViewById(R.id.tvItemFolderTitle)
-        val rlModify: RelativeLayout = itemView.findViewById(R.id.rlItemFolderModify)
+        val llModify: LinearLayout = itemView.findViewById(R.id.llItemFolderModify)
     }
 
     interface ItemClickListener {

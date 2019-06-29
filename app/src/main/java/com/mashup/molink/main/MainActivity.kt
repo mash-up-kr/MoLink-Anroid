@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity(), FolderAdapter.ItemClickListener, Modif
 
     override fun make() {
         folderAdapter.addItem(
-            Folder(10, "test", "#00ff33")
+            Folder(10, "Android", "#5656f4")
         )
     }
 
@@ -98,10 +98,10 @@ class MainActivity : AppCompatActivity(), FolderAdapter.ItemClickListener, Modif
     private fun loadData() {
 
         val items = mutableListOf(
-            Folder(1, "test1", "#00ffff"),
-            Folder(2, "test2", "#ff00ff"),
-            Folder(3, "test3", "#ffff00"),
-            Folder(4, "test4", "#000000")
+            Folder(1, "Developer", "#47c7f5"),
+            Folder(2, "Design", "#87db77"),
+            Folder(3, "MashUp", "#f7c34d"),
+            Folder(4, "Home", "#e26f8e")
         )
 
         folderAdapter.setItems(items)
