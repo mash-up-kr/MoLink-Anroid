@@ -10,14 +10,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Dlog.d("onCreate")
-        Dlog.d("onCreate2")
-        Dlog.d("onCreate3")
-        Dlog.d("onCreate4")
-        Dlog.d("onCreate5")
-
+        Dlog.e("d")
         Dlog.d("New branch Lee")
         Dlog.d("Commit By Kwon")
+
 
     }
 }
