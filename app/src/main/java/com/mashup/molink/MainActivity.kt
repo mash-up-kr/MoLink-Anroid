@@ -11,6 +11,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         Dlog.e("d")
+        Dlog.d("New branch Lee")
+        Dlog.d("Commit By Kwon")
 
 
     }
