@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), FolderAdapter.ItemClickListener, Modif
 
         //TODO Interest 에서 받아온 정보로 폴더 생성
 
-        //getData()
+        getData()
         initRecyclerView()
         initButton()
         loadData()
