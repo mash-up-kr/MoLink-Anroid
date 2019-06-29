@@ -10,24 +10,5 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Dlog.d("onCreate")
-        Dlog.d("onCreate2")
-        Dlog.d("onCreate3")
-        Dlog.d("onCreate4")
-        Dlog.d("onCreate5")
-
-        Dlog.d("New branch Lee")
-
-        Dlog.d("Make onCreate")
-        Dlog.d("Make onCreate2")
-        Dlog.d("Make onCreate2")
-
-        // Hiß
-        // Hi2
-
-
-
-        Dlog.d("you log")
-
     }
 }

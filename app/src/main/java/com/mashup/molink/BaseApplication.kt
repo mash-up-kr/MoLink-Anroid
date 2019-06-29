@@ -17,8 +17,7 @@ class BaseApplication: Application() {
 
         DEBUG = isDebuggable(this)
     }
-
-
+    
     /**
      * get Debug Mode
      *
