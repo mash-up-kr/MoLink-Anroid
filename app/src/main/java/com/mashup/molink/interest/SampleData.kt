@@ -1,9 +1,5 @@
 package com.mashup.molink.interest
 
-import android.graphics.Movie
-
-
-
 class SampleData {
 
     var items = ArrayList<Interest>()

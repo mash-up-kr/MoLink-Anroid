@@ -4,11 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.mashup.molink.MainActivity
 import com.mashup.molink.R
+import com.mashup.molink.main.MainActivity
 import com.mashup.molink.utils.Dlog
 import kotlinx.android.synthetic.main.activity_interest.*
-
 
 class InterestActivity : AppCompatActivity() {
 
@@ -18,8 +17,8 @@ class InterestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_interest)
 
-        rvActivityInterest.layoutManager = GridLayoutManager(this,3)
-        rvActivityInterest.adapter=adapter
+        rvActivityInterest.layoutManager = GridLayoutManager(this, 3)
+        rvActivityInterest.adapter = adapter
 
         adapter.setItem(SampleData().getItem())
 
@@ -28,7 +27,7 @@ class InterestActivity : AppCompatActivity() {
             Dlog.e(adapter.getItem().size.toString())
 
 
-            for(i in adapter.getItem()) {
+            for (i in adapter.getItem()) {
                 Dlog.d(i.toString())
             }
 

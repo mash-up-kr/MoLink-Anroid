@@ -2,18 +2,10 @@ package com.mashup.molink.splash
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
-import com.mashup.molink.R
-
-import com.mashup.molink.MainActivity
 import com.mashup.molink.interest.InterestActivity
-import androidx.core.os.HandlerCompat.postDelayed
-
-
+import com.mashup.molink.main.MainActivity
 
 class SplashActivity : AppCompatActivity() {
 

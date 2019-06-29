@@ -10,8 +10,6 @@ import android.widget.TextView
 import android.view.View
 import kotlinx.android.synthetic.main.item_interest.view.*
 
-
-
 class InterestAdapter: RecyclerView.Adapter<InterestAdapter.ViewHolder>(){
 
     var items = ArrayList<Interest>()
