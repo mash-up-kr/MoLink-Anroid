@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
@@ -84,9 +86,20 @@ public class ShareActivity extends AppCompatActivity {
 
         tvSharedUrl.setText(sharedText);
 
-    }
+        Button.OnClickListener mClickListener = new View.OnClickListener() {
+            public void onClick(View v) {
+                String url = tvSharedUrl.getText().toString();
+                String title = etSharedTitle.getText().toString();
+
+            }
+        };
+        findViewById(R.id.btnLinkSave).setOnClickListener(mClickListener);
+
+    };
+
 
 
 }
+
 
 
