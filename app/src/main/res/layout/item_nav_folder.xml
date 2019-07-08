@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:background="?attr/selectableItemBackground"
+             android:layout_marginStart="14dp"
+             android:layout_width="wrap_content"
+             android:layout_height="23dp">
+
+    <LinearLayout
+            android:background="@drawable/drawable_white_black_rad_7"
+            android:orientation="horizontal"
+            android:paddingStart="11dp"
+            android:paddingEnd="9.8dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <TextView
+                android:id="@+id/tvItemNavFolderTitle"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="title"/>
+
+        <ImageView
+                android:layout_marginStart="10dp"
+                android:background="@color/black"
+                android:layout_width="4dp"
+                android:layout_height="8dp"/>
+
+    </LinearLayout>
+
+</FrameLayout>

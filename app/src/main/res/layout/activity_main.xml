@@ -38,7 +38,6 @@
             android:src="@drawable/fab"
             android:layout_marginEnd="14dp"
             android:layout_marginBottom="29dp"
-            app:backgroundTint="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
