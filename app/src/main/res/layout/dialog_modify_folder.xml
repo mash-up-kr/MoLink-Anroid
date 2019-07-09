@@ -8,19 +8,137 @@
         android:layout_width="288.8dp"
         android:layout_height="379.7dp">
 
-    <TextView
-            android:id="@+id/tvDialogModifyFolderTitle"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_marginTop="89dp"
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glDialogModifyFolderStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="제목"/>
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp"/>
 
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glDialogModifyFolderEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="20dp"/>
+
+    <TextView
+            android:id="@+id/tvDialogModifyFolderTitle"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:hint="폴더 이름"
+            android:textColorHint="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            tools:text="폴더 이름"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/glDialogModifyFolderStart"/>
+
+    <ImageView
+            android:id="@+id/ivDialogModifyFolderColor"
+            android:src="@drawable/drawable_circle_white"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="9dp"
+            app:layout_constraintTop_toTopOf="@+id/tvDialogModifyFolderTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/tvDialogModifyFolderTitle"
+            app:layout_constraintStart_toEndOf="@+id/tvDialogModifyFolderTitle"/>
+
+    <EditText
+            android:id="@+id/etDialogModifyFolder"
+            android:background="@null"
+            android:layout_width="0dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/tvDialogModifyFolderTitle"
+            app:layout_constraintStart_toEndOf="@+id/glDialogModifyFolderStart"
+            app:layout_constraintEnd_toStartOf="@+id/glDialogModifyFolderEnd"/>
+
+    <FrameLayout
+            android:background="@color/black"
+            android:layout_width="0dp"
+            android:layout_height="0.8dp"
+            app:layout_constraintTop_toBottomOf="@+id/etDialogModifyFolder"
+            app:layout_constraintStart_toEndOf="@+id/glDialogModifyFolderStart"
+            app:layout_constraintEnd_toStartOf="@+id/glDialogModifyFolderEnd"/>
+
+    <ImageView
+            android:src="@drawable/ic_pen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/etDialogModifyFolder"
+            app:layout_constraintBottom_toBottomOf="@+id/etDialogModifyFolder"
+            app:layout_constraintEnd_toStartOf="@+id/glDialogModifyFolderEnd"/>
+
+    <TextView
+            android:id="@+id/tvDialogModifyFolderColor"
+            android:text="컬러"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@+id/etDialogModifyFolder"
+            app:layout_constraintStart_toEndOf="@+id/glDialogModifyFolderStart"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            app:layout_constraintTop_toBottomOf="@+id/tvDialogModifyFolderColor"
+            app:layout_constraintStart_toEndOf="@+id/glDialogModifyFolderStart"
+            app:layout_constraintEnd_toStartOf="@+id/glDialogModifyFolderEnd">
+
+        <ImageView
+                android:id="@+id/ivDialogModifyFolderColor0"
+                android:src="@drawable/drawable_circle_white"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="9dp"/>
+
+        <ImageView
+                android:id="@+id/ivDialogModifyFolderColor1"
+                android:src="@drawable/drawable_circle_white"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="9dp"/>
+
+        <ImageView
+                android:id="@+id/ivDialogModifyFolderColor2"
+                android:src="@drawable/drawable_circle_white"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="9dp"/>
+
+        <ImageView
+                android:id="@+id/ivDialogModifyFolderColor3"
+                android:src="@drawable/drawable_circle_white"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="9dp"/>
+
+        <ImageView
+                android:id="@+id/ivDialogModifyFolderColor4"
+                android:src="@drawable/drawable_circle_white"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="9dp"/>
+
+        <ImageView
+                android:id="@+id/ivDialogModifyFolderColor5"
+                android:src="@drawable/drawable_circle_white"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="9dp"/>
+
+    </LinearLayout>
+
+
+    <!-- 폴더 추가 -->
     <TextView
             android:id="@+id/btnDialogModifyFolderMake"
             android:text="폴더 추가"
@@ -30,13 +148,14 @@
             android:textStyle="bold"
             android:background="@drawable/drawable_black_rad_4"
             android:visibility="gone"
-            android:layout_width="246dp"
+            android:layout_width="0dp"
             android:layout_height="40dp"
             tools:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/glDialogModifyFolderStart"
+            app:layout_constraintEnd_toStartOf="@+id/glDialogModifyFolderEnd"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <!-- 삭제 -->
     <TextView
             android:id="@+id/btnDialogModifyFolderDelete"
             android:text="삭제"
@@ -49,10 +168,10 @@
             android:layout_width="110dp"
             android:layout_height="40dp"
             tools:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btnDialogModifyFolderModify"
+            app:layout_constraintEnd_toStartOf="@+id/glDialogModifyFolderEnd"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <!-- 수정 -->
     <TextView
             android:id="@+id/btnDialogModifyFolderModify"
             android:text="수정"
@@ -65,16 +184,16 @@
             android:layout_width="110dp"
             android:layout_height="40dp"
             tools:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnDialogModifyFolderDelete"
+            app:layout_constraintStart_toEndOf="@+id/glDialogModifyFolderStart"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <!-- 닫기 -->
     <ImageView
             android:id="@+id/btnDialogModifyFolderCancel"
             android:src="@drawable/ic_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="21dp"
+            android:padding="21dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 

@@ -3,18 +3,15 @@ package com.mashup.molink.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.GridLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mashup.molink.R
-import com.mashup.molink.adapter.FolderAdapter
 import com.mashup.molink.detail.DetailActivity
 import com.mashup.molink.dialog.ModifyFolderDialog
 import com.mashup.molink.model.Folder
 import com.mashup.molink.utils.Dlog
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.toast
 
-class MainActivity : AppCompatActivity(), FolderAdapter.ItemClickListener, ModifyFolderDialog.DialogClickListener {
+class MainActivity : AppCompatActivity(), MainFolderAdapter.ItemClickListener, ModifyFolderDialog.DialogClickListener {
 
     companion object {
 
@@ -22,7 +19,7 @@ class MainActivity : AppCompatActivity(), FolderAdapter.ItemClickListener, Modif
     }
 
     private val folderAdapter by lazy {
-        FolderAdapter().apply {
+        MainFolderAdapter().apply {
             setItemClickListener(this@MainActivity)
         }
     }
@@ -54,9 +51,9 @@ class MainActivity : AppCompatActivity(), FolderAdapter.ItemClickListener, Modif
         }.show()
     }
 
-    override fun make() {
+    override fun make(title: String, color: String) {
         folderAdapter.addItem(
-            Folder(10, "Android", "#5656f4")
+            Folder(10, title, color)
         )
     }
 
