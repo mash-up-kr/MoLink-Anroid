@@ -1,4 +1,4 @@
-package com.mashup.molink.adapter
+package com.mashup.molink.main
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mashup.molink.R
 import com.mashup.molink.model.Folder
 import com.mashup.molink.utils.Dlog
 
-class FolderAdapter : RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
+class MainFolderAdapter : RecyclerView.Adapter<MainFolderAdapter.FolderViewHolder>() {
 
     private var items: MutableList<Folder> = mutableListOf()
 
@@ -22,7 +21,7 @@ class FolderAdapter : RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         FolderViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.item_folder,
+                R.layout.item_main_folder,
                 parent,
                 false
             )
@@ -35,7 +34,7 @@ class FolderAdapter : RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
             with(holder) {
 
                 try {
-                    ivItemFolderHead.setColorFilter(Color.parseColor(item.color))
+                    ivFolderHead.setColorFilter(Color.parseColor(item.color))
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -94,11 +93,9 @@ class FolderAdapter : RecyclerView.Adapter<FolderAdapter.FolderViewHolder>() {
 
     class FolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val ivFolder: ImageView = itemView.findViewById(R.id.ivItemFolder)
-        val ivItemFolderHead: ImageView = itemView.findViewById(R.id.ivItemFolderHead)
-
-        val tvTitle: TextView = itemView.findViewById(R.id.tvItemFolderTitle)
-        val llModify: LinearLayout = itemView.findViewById(R.id.llItemFolderModify)
+        val ivFolderHead: ImageView = itemView.findViewById(R.id.ivItemMainFolderHead)
+        val tvTitle: TextView = itemView.findViewById(R.id.tvItemMainFolderTitle)
+        val llModify: LinearLayout = itemView.findViewById(R.id.llItemMainFolderModify)
     }
 
     interface ItemClickListener {
