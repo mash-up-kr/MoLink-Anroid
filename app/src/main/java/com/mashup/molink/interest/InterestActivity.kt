@@ -37,6 +37,7 @@ class InterestActivity : AppCompatActivity() {
             var intent = Intent(this@InterestActivity, MainActivity::class.java)
             intent.putExtra("KEY_INTERESTS", list)
             startActivity(intent)
+            finish()
         }
 
     }
