@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.mashup.molink.R
-import com.mashup.molink.model.Folder
-import com.mashup.molink.utils.Dlog
+import com.mashup.molink.data.Folder
+import com.mashup.molink.utils.FolderDiffCallback
 
 class MainFolderAdapter : RecyclerView.Adapter<MainFolderAdapter.FolderViewHolder>() {
 
@@ -39,7 +40,7 @@ class MainFolderAdapter : RecyclerView.Adapter<MainFolderAdapter.FolderViewHolde
                     e.printStackTrace()
                 }
 
-                tvTitle.text = item.title
+                tvTitle.text = item.name
 
                 //수정 버튼
                 llModify.setOnClickListener {
@@ -54,8 +55,18 @@ class MainFolderAdapter : RecyclerView.Adapter<MainFolderAdapter.FolderViewHolde
         }
     }
 
+    fun updateListItems(newItems: MutableList<Folder>) {
+
+        val diffCallback = FolderDiffCallback(items, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        items.clear()
+        items.addAll(newItems)
+
+        diffResult.dispatchUpdatesTo(this)
+    }
+
     fun setItems(items: MutableList<Folder>) {
-        Dlog.d("setItems items : ${items.size}")
         this.items = items
         notifyDataSetChanged()
     }
@@ -65,10 +76,9 @@ class MainFolderAdapter : RecyclerView.Adapter<MainFolderAdapter.FolderViewHolde
         notifyItemInserted(items.size - 1)
     }
 
-    fun deleteItem(fid: Int) {
-
+    fun deleteItem(id: Int) {
         for((index, value) in items.withIndex()) {
-            if(value.fid == fid) {
+            if(value.id == id) {
                 items.removeAt(index)
                 notifyItemRemoved(index)
                 break
@@ -77,9 +87,8 @@ class MainFolderAdapter : RecyclerView.Adapter<MainFolderAdapter.FolderViewHolde
     }
 
     fun modifyItem(item: Folder) {
-
         for((index, value) in items.withIndex()) {
-            if(value.fid == item.fid) {
+            if(value.id == item.id) {
                 items[index] = item
                 notifyItemChanged(index)
                 break

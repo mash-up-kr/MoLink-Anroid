@@ -9,7 +9,7 @@ import android.view.View
 import android.view.Window
 import androidx.core.content.ContextCompat
 import com.mashup.molink.R
-import com.mashup.molink.model.Folder
+import com.mashup.molink.data.Folder
 import kotlinx.android.synthetic.main.dialog_modify_folder.*
 import org.jetbrains.anko.toast
 
@@ -60,12 +60,12 @@ class ModifyFolderDialog(context: Context,
 
         } else {
 
-            etDialogModifyFolder.setText(folder.title)
+            etDialogModifyFolder.setText(folder.name)
             color = folder.color
 
             btnDialogModifyFolderDelete.visibility = View.VISIBLE
             btnDialogModifyFolderDelete.setOnClickListener {
-                listener?.delete(folder.fid)
+                listener?.delete(folder.id)
                 dismiss()
             }
 
@@ -76,7 +76,7 @@ class ModifyFolderDialog(context: Context,
                 if(title.isNullOrEmpty()) {
                     context.toast("폴더 이름을 입력해 주세요")
                 } else {
-                    val modifyFolder = folder.copy(title = etDialogModifyFolder.text.toString(), color = color)
+                    val modifyFolder = folder.copy(name = etDialogModifyFolder.text.toString(), color = color)
                     listener?.modify(modifyFolder)
                     dismiss()
                 }
@@ -142,7 +142,7 @@ class ModifyFolderDialog(context: Context,
 
         fun make(title: String, color: String)
 
-        fun delete(fid: Int)
+        fun delete(id: Int)
 
         fun modify(folder: Folder)
     }

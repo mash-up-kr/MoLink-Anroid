@@ -4,9 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.mashup.molink.R
-import com.mashup.molink.model.Folder
+import com.mashup.molink.data.Folder
+import com.mashup.molink.utils.FolderDiffCallback
 
 class NavFolderAdapter : RecyclerView.Adapter<NavFolderAdapter.NavFolderViewHolder>() {
 
@@ -28,14 +30,29 @@ class NavFolderAdapter : RecyclerView.Adapter<NavFolderAdapter.NavFolderViewHold
     override fun onBindViewHolder(holder: NavFolderViewHolder, position: Int) {
         items[position].let { item ->
             with(holder) {
-                tvFolderTitle.text = item.title
+                tvFolderTitle.text = item.name
 
                 //전체 버튼
                 itemView.setOnClickListener {
-                    listener?.onItemClick(item)
+                    if(position > 0) {
+                        listener?.onItemClick(items[position-1].id, item.id)
+                    } else {
+                        listener?.onItemClickRoot(item.id)
+                    }
                 }
             }
         }
+    }
+
+    fun updateListItems(newItems: MutableList<Folder>) {
+
+        val diffCallback = FolderDiffCallback(items, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        items.clear()
+        items.addAll(newItems)
+
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun addItem(item: Folder) {
@@ -43,10 +60,10 @@ class NavFolderAdapter : RecyclerView.Adapter<NavFolderAdapter.NavFolderViewHold
         notifyItemInserted(items.size - 1)
     }
 
-    fun deleteItem(fid: Int) {
+    fun deleteItem(id: Int) {
 
         for((index, value) in items.withIndex()) {
-            if(value.fid == fid) {
+            if(value.id == id) {
                 items.removeAt(index)
                 notifyItemRemoved(index)
                 break
@@ -65,6 +82,8 @@ class NavFolderAdapter : RecyclerView.Adapter<NavFolderAdapter.NavFolderViewHold
 
     interface ItemClickListener {
 
-        fun onItemClick(folder: Folder)
+        fun onItemClick(beforeFolderId: Int, folderId: Int)
+
+        fun onItemClickRoot(folderId: Int)
     }
 }
