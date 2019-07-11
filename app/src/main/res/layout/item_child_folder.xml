@@ -10,7 +10,7 @@
         android:layout_height="wrap_content">
 
     <ImageView
-            android:id="@+id/ivItemSubFolderHead"
+            android:id="@+id/ivItemChildFolderHead"
             android:src="@drawable/drawable_folder_head"
             android:layout_width="22.5dp"
             android:layout_height="7dp"
@@ -23,13 +23,13 @@
             android:src="@drawable/drawable_folder_head_border"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="@+id/ivItemSubFolderHead"
-            app:layout_constraintBottom_toBottomOf="@+id/ivItemSubFolderHead"
-            app:layout_constraintStart_toStartOf="@+id/ivItemSubFolderHead"
-            app:layout_constraintEnd_toEndOf="@+id/ivItemSubFolderHead"/>
+            app:layout_constraintTop_toTopOf="@+id/ivItemChildFolderHead"
+            app:layout_constraintBottom_toBottomOf="@+id/ivItemChildFolderHead"
+            app:layout_constraintStart_toStartOf="@+id/ivItemChildFolderHead"
+            app:layout_constraintEnd_toEndOf="@+id/ivItemChildFolderHead"/>
 
     <ImageView
-            android:id="@+id/ivItemSubFolder"
+            android:id="@+id/ivItemChildFolder"
             android:src="@drawable/img_folder"
             android:layout_width="42dp"
             android:layout_height="35dp"
@@ -37,7 +37,7 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-            android:id="@+id/tvItemSubFolderTitle"
+            android:id="@+id/tvItemChildFolderTitle"
             android:textColor="@color/black"
             android:textSize="11dp"
             android:textStyle="bold"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="19dp"
             android:maxLines="2"
-            app:layout_constraintStart_toEndOf="@+id/ivItemSubFolder"
+            app:layout_constraintStart_toEndOf="@+id/ivItemChildFolder"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="title"/>
