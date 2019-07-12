@@ -30,6 +30,11 @@ class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListene
                 break
             }
         }
+
+        var prefs = getSharedPreferences("Pref", Context.MODE_PRIVATE)
+
+        prefs.edit().putBoolean("isFirstRun",false).apply()
+
         if(check_sum>0){
             btnActivityInterestOk.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.black))
             btnActivityInterestOk.isEnabled=true

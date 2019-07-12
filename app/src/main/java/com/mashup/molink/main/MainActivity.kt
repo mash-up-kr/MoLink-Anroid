@@ -142,6 +142,8 @@ class MainActivity : AppCompatActivity(), MainFolderAdapter.ItemClickListener, M
             }.also {
                 compositeDisposable.add(it)
             }
+        } else {
+            loadData()
         }
 
     }
