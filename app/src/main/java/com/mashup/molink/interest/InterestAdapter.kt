@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.item_interest.view.*
 
 class InterestAdapter: RecyclerView.Adapter<InterestAdapter.ViewHolder>(){
 
-    var items = ArrayList<Interest>()
+    var items = ArrayList<Data>()
     lateinit var listener: OnItemClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, i: Int): InterestAdapter.ViewHolder {
@@ -30,7 +30,11 @@ class InterestAdapter: RecyclerView.Adapter<InterestAdapter.ViewHolder>(){
 
         val item = items.get(position)
         viewHolder.tvName.text=item.name
-        viewHolder.ivInterest.setImageDrawable(item.src)
+
+        Glide.with(viewHolder.itemView.context)
+            .load(item.imgUrl)
+            .into(viewHolder.ivInterest)
+
         viewHolder.check=item.check
         viewHolder.itemView.setOnClickListener({ view ->
 
@@ -47,18 +51,19 @@ class InterestAdapter: RecyclerView.Adapter<InterestAdapter.ViewHolder>(){
 
         })
 
-     //   viewHolder.bind(item)
+       // viewHolder.bind(item)
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-    fun setItem(items: ArrayList<Interest>) {
+    fun setItem(items: ArrayList<Data>) {
         this.items = items
+        notifyDataSetChanged()
     }
 
-    fun getItem(): ArrayList<Interest>{
+    fun getItem(): ArrayList<Data>{
         return items
     }
 
@@ -67,7 +72,7 @@ class InterestAdapter: RecyclerView.Adapter<InterestAdapter.ViewHolder>(){
     }
 
     interface OnItemClickListener {
-        fun onClick(interest: Interest)
+        fun onClick(interest: Data)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
