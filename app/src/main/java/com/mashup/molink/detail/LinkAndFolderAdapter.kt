@@ -40,7 +40,6 @@ class LinkAndFolderAdapter : RecyclerView.Adapter<LinkAndFolderAdapter.BaseViewH
     }
 
     fun setItems(items: MutableList<LinkAndFolderModel>) {
-        Dlog.d("setItems items : ${items.size}")
         this.items = items
         notifyDataSetChanged()
     }
@@ -56,7 +55,6 @@ class LinkAndFolderAdapter : RecyclerView.Adapter<LinkAndFolderAdapter.BaseViewH
                 break
             }
         }
-        Dlog.d("addFolder index : $index")
         items.add(index, temp)
         notifyItemInserted(index)
     }

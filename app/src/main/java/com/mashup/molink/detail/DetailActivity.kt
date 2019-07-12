@@ -72,13 +72,11 @@ class DetailActivity : AppCompatActivity()
     /**
      * NavFolderAdapter listener
      */
-    //TODO 중간 클릭 시 다음 아이템 제거
     override fun onItemClick(beforeFolderId: Int, folderId: Int) {
         navFolderAdapter.deleteItem(folderId)
         loadDetailFolderByParent(beforeFolderId)
     }
 
-    //TODO 중간 클릭 시 다음 아이템 제거
     override fun onItemClickRoot(folderId: Int) {
         navFolderAdapter.deleteItem(folderId)
         loadRootFolderGoToFirst()
@@ -89,7 +87,6 @@ class DetailActivity : AppCompatActivity()
      */
     override fun onItemFolderClick(item: LinkAndFolderModel) {
 
-        Dlog.e("onItemFolderClick title : ${item.title} , fid : ${item.fid} lid : ${item.lid} ")
         folderDao.getFolderById(folderId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -108,7 +105,7 @@ class DetailActivity : AppCompatActivity()
     }
 
     override fun onItemLinkModifyClick(item: LinkAndFolderModel) {
-        //TODO 수정 화면
+        //수정 화면 제거
     }
 
     /**
@@ -117,39 +114,22 @@ class DetailActivity : AppCompatActivity()
     override fun make(title: String, color: String) {
 
         val folder = Folder(name = title, color = color, parentId = folderId)
-        Dlog.d("make -> folderId : $folderId -> 생성된 폴더 id : ${folder.id} ")
 
-        //TODO insert 로 생성한 폴더의 id 값을 리턴해야 합니다.
-        val insertObserver = Single.fromCallable {
-            folderDao.insert(folder)
-        }
-
-        insertObserver.concatWith {
-            folderDao
-                .getAllFolders()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    val size = it.size
-                    val lastFolder = it.get(size-1)
-                    Dlog.d("make -> name : ${lastFolder.name} , lastFolderId : ${lastFolder.id}")
-                    linkAndFolderAdapter.addFolder(folder)
-                }){
-                    Dlog.e("make -> concatWith : " + it.message)
-                }
-        }.subscribe()
-            .also {
-            compositeDisposable.add(it)
-        }
-
-        /*Observable
-            .fromCallable { folderDao.insert(folder) }
+        Single.fromCallable {
+                folderDao.insert(folder)
+            }.flatMap {
+                folderDao.getAllFolders()
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                linkAndFolderAdapter.addFolder(folder)
+            .subscribe({
+                val lastFolder = it[it.size - 1]
+                linkAndFolderAdapter.addFolder(lastFolder)
+            }) {
+                Dlog.e(it.message)
             }.also {
                 compositeDisposable.add(it)
-            }*/
+            }
     }
 
     override fun delete(id: Int) {
@@ -195,7 +175,6 @@ class DetailActivity : AppCompatActivity()
                 callback = object : SlideLayoutManager.OnItemSelectedListener {
                     override fun onItemSelected(layoutPosition: Int) {
                         val folder = detailFolderAdapter.getItem(layoutPosition)
-                        Dlog.d("layoutPosition : $layoutPosition -> folder : ${folder?.name}")
                         folder?.let {
                             folderId = it.id
                             loadChildData()
@@ -240,16 +219,12 @@ class DetailActivity : AppCompatActivity()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { folders ->
 
-                Dlog.e("loadRootFolder : $folders")
                 val items = folders.filter { it.parentId == null }
-                Dlog.e("items : $items")
 
                 detailFolderAdapter.updateListItems(items.toMutableList())
-
                 val pos = detailFolderAdapter.getPosition(folderId)
-                Dlog.d("pos : $pos")
-
                 rvActivityDetailViewFolder.scrollToPosition(pos)
+
                 loadChildData()
 
             }.also {
@@ -264,12 +239,8 @@ class DetailActivity : AppCompatActivity()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { folders ->
 
-                Dlog.e("loadRootFolder : $folders")
                 val items = folders.filter { it.parentId == null }
-                Dlog.e("items : $items")
-
                 detailFolderAdapter.updateListItems(items.toMutableList())
-
                 this.folderId = items[0].id
 
                 loadChildData()
@@ -286,13 +257,10 @@ class DetailActivity : AppCompatActivity()
             .subscribe({
                 Dlog.d("loadDetailFolderByParentWithFocus : $it")
                 if (it.isNotEmpty()) {
+
                     this.folderId = focusId
-                    Dlog.d("focusId : $focusId")
                     detailFolderAdapter.updateListItems(it.toMutableList())
-
                     val pos = detailFolderAdapter.getPosition(this.folderId)
-                    Dlog.d("pos : $pos")
-
                     rvActivityDetailViewFolder.scrollToPosition(pos)
 
                     loadChildData()
@@ -310,7 +278,6 @@ class DetailActivity : AppCompatActivity()
         folderDao.getFoldersByParentId(folderId)
             .subscribeOn(Schedulers.io())
             .subscribe({
-                Dlog.d("loadDetailFolderByParent : $it")
                 if (it.isNotEmpty()) {
                     this.folderId = it[0].id
                     detailFolderAdapter.updateListItems(it.toMutableList())
@@ -326,7 +293,6 @@ class DetailActivity : AppCompatActivity()
 
     private fun loadChildData() {
 
-        Dlog.d("loadChildData folderId : $folderId")
         val childFolder = folderDao.getFoldersByParentId(folderId)
 
         val childLink = linkDao.getLinksByFolderId(folderId)
@@ -356,9 +322,8 @@ class DetailActivity : AppCompatActivity()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Dlog.d("list LinkAndFolderModel -> $it")
                 linkAndFolderAdapter.setItems(it.toMutableList())
-            }){
+            }) {
                 Dlog.e(it.message)
             }.also {
                 compositeDisposable.add(it)

@@ -62,12 +62,14 @@ class NavFolderAdapter : RecyclerView.Adapter<NavFolderAdapter.NavFolderViewHold
 
     fun deleteItem(id: Int) {
 
-        for((index, value) in items.withIndex()) {
-            if(value.id == id) {
-                items.removeAt(index)
-                notifyItemRemoved(index)
-                break
-            }
+        for(i in items.size - 1 downTo 0) {
+
+            val item = items[i]
+
+            items.removeAt(i)
+            notifyItemRemoved(i)
+
+            if(item.id == id) break
         }
     }
 

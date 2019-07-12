@@ -24,7 +24,7 @@ abstract class MoLinkDataBase: RoomDatabase() {
                         context.applicationContext,
                         MoLinkDataBase::class.java,
                         "molink.db")
-                        //TODO 테스트용 - 빌드 시 마다 기존 데이터베이스 삭제
+                        //테스트용 : 빌드 시 마다 기존 데이터베이스 삭제
                         //.fallbackToDestructiveMigration()
                         .build()
                 }

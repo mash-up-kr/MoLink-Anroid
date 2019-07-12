@@ -17,6 +17,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -87,6 +89,11 @@ class MainActivity : AppCompatActivity(), MainFolderAdapter.ItemClickListener, M
     }
 
     override fun delete(id: Int) {
+        if(folderAdapter.itemCount <= 1) {
+            longToast("적어도 1개의 폴더가 있어야 합니다 :)")
+            return
+        }
+
         runOnIoScheduler {
             folderDao.deleteFolderById(id)
             loadData()
