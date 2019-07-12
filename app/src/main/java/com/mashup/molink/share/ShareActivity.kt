@@ -29,13 +29,14 @@ class ShareActivity : AppCompatActivity() {
         getLinkUrl()
 
         var hashTagsArray =arrayListOf<String>()
+
         //링크 저장 버튼 클릭시
         btnLinkSave.setOnClickListener {
 
             var intent = Intent(this@ShareActivity, MainActivity::class.java)
             intent.putExtra("sharedUrl", tvSharedUrl.text)
             intent.putExtra("sharedTitle", etSharedTitle.text)
-            intent.putExtra("hashTags",hashTagsArray)
+            //intent.putExtra("hashTags",hashTagsArray)
             setResult(Activity.RESULT_OK, intent)
 
             finish()
@@ -71,7 +72,7 @@ class ShareActivity : AppCompatActivity() {
 
 
         //해쉬태그 추가
-
+        /*
         //recycler view
         recyclerviewHashTags.adapter = HashTagAdapter(hashTagsArray)
         recyclerviewHashTags.layoutManager = GridLayoutManager(this, 3) //예쁘게 나중에
@@ -98,9 +99,10 @@ class ShareActivity : AppCompatActivity() {
                 return false
             }
         })
+        */
 
-        //저장 경로
-        recyclerviewStoreRoute.adapter = StoreRouteAdapter()
+        //저장 경로 설정
+        recyclerviewStoreRoute.adapter = StoreRouteAdapter(this)
         recyclerviewStoreRoute.layoutManager = GridLayoutManager(this, 3)
 
 
