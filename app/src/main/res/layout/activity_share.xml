@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <TextView
+            android:id="@+id/tvLinkSaveTitle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="37dp"
+            android:textColor="@color/black"
+            android:lineSpacingExtra="4sp"
+            android:gravity="center"
+            android:text="Link Save"
+    />
+
+
+    <ImageButton
+            android:id="@+id/btnShareActivityCancel"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/no_icon"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_alignEnd="@+id/tvLinkSaveTitle"
+            android:layout_alignTop="@+id/tvLinkSaveTitle"/>
+
+    <ScrollView
+            android:id="@+id/svLinkSaveScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:layout_below="@+id/tvLinkSaveTitle"
+            android:fillViewport="true">
+
+        <RelativeLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/tvSharedUrl"
+                    android:scrollbars="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="45dp"
+                    android:textSize="20sp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:textColor="@color/black"
+                    android:lineSpacingExtra="18sp"
+                    />
+
+            <EditText
+                    android:id="@+id/etSharedTitle"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_alignStart="@+id/tvSharedUrl"
+                    android:layout_alignEnd="@+id/tvSharedUrl"
+                    android:layout_marginTop="30dp"
+                    android:layout_below="@+id/tvSharedUrl"
+                    android:inputType="text"/>
+
+<!-- 해쉬태그 기능 제외
+            <TextView
+                    android:id="@+id/tvHashTagTitle"
+                    android:layout_width="68sp"
+                    android:layout_height="25sp"
+                    android:background="@drawable/hash_tag"
+                    android:layout_marginTop="33dp"
+                    android:layout_below="@+id/etSharedTitle"
+                    android:layout_marginStart="0dp"
+                    android:layout_alignStart="@+id/etSharedTitle"/>
+
+            <EditText
+                    android:id="@+id/edAddHashTag"
+                    android:layout_width="148dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/box_border"
+                    android:layout_marginTop="9dp" android:layout_below="@+id/tvHashTagTitle"
+                    android:layout_marginStart="0dp" android:layout_alignStart="@+id/tvHashTagTitle"
+                    android:drawableEnd="@drawable/add"
+                    android:paddingRight="8dp"
+                    android:paddingLeft="8dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerviewHashTags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_marginTop="15dp"
+                    android:layout_below="@+id/edAddHashTag"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"/>
+-->
+            <TextView
+                    android:id="@+id/tvStoreRouteTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="저장 위치 : "
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginTop="26dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_alignStart="@+id/etSharedTitle" android:layout_below="@+id/etSharedTitle"/>
+
+            <TextView
+                    android:id="@+id/tvStoreRouteFolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginTop="26dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_toRightOf="@+id/tvStoreRouteTitle" android:layout_below="@+id/etSharedTitle"
+                    tools:text="folder"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerviewStoreRoute"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_marginTop="15dp"
+                    android:layout_below="@+id/tvStoreRouteTitle"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"/>
+
+            <ImageButton
+                    android:id="@+id/btnLinkSave"
+                    android:background="@drawable/link_save"
+                    android:layout_height="60dp"
+                    android:layout_alignStart="@+id/etSharedTitle"
+                    android:layout_alignEnd="@+id/etSharedTitle"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="150dp"
+                    android:layout_marginStart="0dp" android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="20dp" android:layout_below="@+id/recyclerviewStoreRoute"/>
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

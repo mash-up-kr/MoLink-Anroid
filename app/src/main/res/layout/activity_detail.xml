@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/brown_grey"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <!-- top layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clActivityDetailTopLayout"
+            android:layout_width="0dp"
+            android:layout_height="258dp"
+            android:background="@drawable/drawable_white_bottom_rad_4"
+            android:elevation="6dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- back -->
+        <ImageView
+                android:id="@+id/ivActivityDetailBack"
+                android:src="@drawable/ic_back"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/tvActivityDetailTitle"
+                app:layout_constraintBottom_toBottomOf="@+id/tvActivityDetailTitle"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+        <!-- title -->
+        <TextView
+                android:id="@+id/tvActivityDetailTitle"
+                android:text="Link"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_alignParentBottom="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- nav folder -->
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvActivityDetailNavFolder"
+                android:layout_width="0dp"
+                android:layout_height="23dp"
+                android:layout_marginTop="38dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvActivityDetailTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- main folder -->
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvActivityDetailViewFolder"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clipToPadding="false"
+                app:layout_constraintTop_toBottomOf="@+id/rvActivityDetailNavFolder"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- bottom layout -->
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvActivityDetailLink"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="221dp"
+            android:paddingTop="50dp"
+            android:paddingBottom="50dp"
+            android:clipToPadding="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- fab button -->
+    <ImageView
+            android:id="@+id/fabActivityDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fab"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="29dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

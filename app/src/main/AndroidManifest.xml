@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.mashup.molink">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
             android:name=".BaseApplication"
             android:allowBackup="true"
@@ -12,13 +14,45 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".splash.SplashActivity"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".share.ShareActivity"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:scheme="sms"/>
+                <data android:scheme="smsto"/>
+            </intent-filter> <!-- filter for sending text or images; accepts SEND action and text or image data -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="image/*"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".detail.DetailActivity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".interest.InterestActivity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".main.MainActivity"
+                  android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
