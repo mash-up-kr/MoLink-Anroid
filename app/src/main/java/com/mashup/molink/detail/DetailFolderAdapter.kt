@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.mashup.molink.R
-import com.mashup.molink.model.Folder
+import com.mashup.molink.data.Folder
 import com.mashup.molink.utils.Dlog
+import com.mashup.molink.utils.FolderDiffCallback
 
 class DetailFolderAdapter : RecyclerView.Adapter<DetailFolderAdapter.DetailFolderViewHolder>() {
 
@@ -36,13 +38,41 @@ class DetailFolderAdapter : RecyclerView.Adapter<DetailFolderAdapter.DetailFolde
                     e.printStackTrace()
                 }
 
-                tvTitle.text = item.title
+                tvTitle.text = item.name
             }
         }
     }
 
+    fun getItem(position: Int): Folder? {
+
+        if (position < items.size) {
+            return items[position]
+        }
+        return null
+    }
+
+    fun getPosition(id: Int): Int {
+
+        for((index, value) in items.withIndex()) {
+            if(value.id == id) {
+                return index
+            }
+        }
+        return 0
+    }
+
+    fun updateListItems(newItems: MutableList<Folder>) {
+
+        val diffCallback = FolderDiffCallback(items, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        items.clear()
+        items.addAll(newItems)
+
+        diffResult.dispatchUpdatesTo(this)
+    }
+
     fun setItems(items: MutableList<Folder>) {
-        Dlog.d("setItems items : ${items.size}")
         this.items = items
         notifyDataSetChanged()
     }

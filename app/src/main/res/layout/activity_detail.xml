@@ -57,14 +57,14 @@
 
         <!-- main folder -->
         <androidx.recyclerview.widget.RecyclerView
-               android:id="@+id/rvActivityDetailViewFolder"
-               android:layout_width="0dp"
-               android:layout_height="0dp"
-               android:clipToPadding="false"
-               app:layout_constraintTop_toBottomOf="@+id/rvActivityDetailNavFolder"
-               app:layout_constraintBottom_toBottomOf="parent"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintEnd_toEndOf="parent"/>
+                android:id="@+id/rvActivityDetailViewFolder"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clipToPadding="false"
+                app:layout_constraintTop_toBottomOf="@+id/rvActivityDetailNavFolder"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -92,5 +92,16 @@
             android:layout_marginBottom="29dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!-- test -->
+    <TextView
+            android:id="@+id/addLinkTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="링크 임의 추가"
+            app:layout_constraintEnd_toStartOf="@+id/fabActivityDetail"
+            app:layout_constraintTop_toTopOf="@+id/fabActivityDetail"
+            app:layout_constraintEnd_toEndOf="@+id/fabActivityDetail"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
