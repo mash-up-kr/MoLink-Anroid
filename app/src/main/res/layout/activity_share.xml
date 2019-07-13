@@ -61,6 +61,7 @@
                     android:layout_height="50dp"
                     android:textSize="20sp"
                     android:textColor="@color/black"
+                    android:hint="링크 제목을 입력해 주세요"
                     android:layout_alignStart="@+id/tvSharedUrl"
                     android:layout_alignEnd="@+id/tvSharedUrl"
                     android:layout_marginTop="30dp"
