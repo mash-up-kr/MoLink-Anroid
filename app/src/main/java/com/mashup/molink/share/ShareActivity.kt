@@ -166,15 +166,26 @@ class ShareActivity : AppCompatActivity() {
             override fun onPostExecute(result: org.jsoup.nodes.Document?) {
                 super.onPostExecute(result)
 
-                val title = result!!.select("meta[property=og:title]").first().attr("content")
-                val description = result.select("meta[property=og:description]")[0].attr("content")
-                val imageUrl = result.select("meta[property=og:image]")[0].attr("content")
+                if(result != null) {
 
-                Dlog.e("title : $title")
-                Dlog.e("description : $description")
-                Dlog.e("imageUrl : $imageUrl")
+                    //TODO 일부 링크 에서는 header 에 원하는 정보가 없습니다.
+                    try {
+                        val title = result.select("meta[property=og:title]").first().attr("content")
+                        val description = result.select("meta[property=og:description]")[0].attr("content")
+                        val imageUrl = result.select("meta[property=og:image]")[0].attr("content")
 
-                etSharedTitle.setText(title)
+                        Dlog.e("title : $title")
+                        Dlog.e("description : $description")
+                        Dlog.e("imageUrl : $imageUrl")
+
+                        etSharedTitle.setText(title)
+                    } catch (e: Exception) {
+                        Dlog.e(e.message)
+                    }
+
+                } else {
+                    toast("링크 생성에 실패 했습니다.")
+                }
             }
 
         }
@@ -250,8 +261,8 @@ class ShareActivity : AppCompatActivity() {
         val url = tvSharedUrl.text.toString()
         val name = etSharedTitle.text.toString()
 
-        if (title.isEmpty()) {
-            toast("제목을 입력해 주세요.")
+        if (name.isEmpty()) {
+            toast("링크 제목을 입력해 주세요.")
         } else {
 
             val link = Link(name = name, url = url, folderId = selectedFolder?.id)
