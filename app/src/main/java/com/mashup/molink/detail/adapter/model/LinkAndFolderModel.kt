@@ -1,4 +1,4 @@
-package com.mashup.molink.model
+package com.mashup.molink.detail.adapter.model
 
 data class LinkAndFolderModel(
     val fid: Int = -1,

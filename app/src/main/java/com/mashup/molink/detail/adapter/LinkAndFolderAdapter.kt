@@ -1,4 +1,4 @@
-package com.mashup.molink.detail
+package com.mashup.molink.detail.adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -8,10 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mashup.molink.R
-import com.mashup.molink.data.Folder
-import com.mashup.molink.data.Link
-import com.mashup.molink.model.LinkAndFolderModel
-import com.mashup.molink.utils.Dlog
+import com.mashup.molink.data.model.Folder
+import com.mashup.molink.data.model.Link
+import com.mashup.molink.detail.adapter.model.LinkAndFolderModel
 
 class LinkAndFolderAdapter : RecyclerView.Adapter<LinkAndFolderAdapter.BaseViewHolder>() {
 
@@ -23,12 +22,21 @@ class LinkAndFolderAdapter : RecyclerView.Adapter<LinkAndFolderAdapter.BaseViewH
 
         when (viewType) {
 
-            1 -> return ChildFolderViewHolder.newInstance(parent, listener)
+            1 -> return ChildFolderViewHolder.newInstance(
+                parent,
+                listener
+            )
 
-            2 -> return LinkViewHolder.newInstance(parent, listener)
+            2 -> return LinkViewHolder.newInstance(
+                parent,
+                listener
+            )
         }
 
-        return ChildFolderViewHolder.newInstance(parent, listener)
+        return ChildFolderViewHolder.newInstance(
+            parent,
+            listener
+        )
     }
 
     override fun getItemCount() = items.size
@@ -45,7 +53,12 @@ class LinkAndFolderAdapter : RecyclerView.Adapter<LinkAndFolderAdapter.BaseViewH
     }
     
     fun addFolder(item: Folder) {
-        val temp = LinkAndFolderModel(fid = item.id, title = item.name, color = item.color, viewType = 1)
+        val temp = LinkAndFolderModel(
+            fid = item.id,
+            title = item.name,
+            color = item.color,
+            viewType = 1
+        )
 
         //폴더의 마지막 위치를 가져옴
         var index = 0

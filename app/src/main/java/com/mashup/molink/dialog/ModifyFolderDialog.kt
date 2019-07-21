@@ -7,9 +7,9 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.Window
-import androidx.core.content.ContextCompat
 import com.mashup.molink.R
-import com.mashup.molink.data.Folder
+import com.mashup.molink.data.model.Folder
+import com.mashup.molink.utils.ColorUtil
 import kotlinx.android.synthetic.main.dialog_modify_folder.*
 import org.jetbrains.anko.toast
 
@@ -24,15 +24,9 @@ class ModifyFolderDialog(context: Context,
 
     private var listener: DialogClickListener? = null
 
-    private val colors = arrayOf(
-        String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(context, R.color.purpleish_blue)),
-        String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(context, R.color.maize)),
-        String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(context, R.color.lightblue)),
-        String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(context, R.color.lighter_purple)),
-        String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(context, R.color.lightish_green)),
-        String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(context, R.color.pig_pink)))
+    private val colors = ColorUtil.getColors(context)
 
-    private var color = String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(context, R.color.purpleish_blue))
+    private var color = colors[0]
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

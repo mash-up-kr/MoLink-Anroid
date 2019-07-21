@@ -1,4 +1,4 @@
-package com.mashup.molink.detail
+package com.mashup.molink.detail.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.mashup.molink.R
-import com.mashup.molink.data.Folder
+import com.mashup.molink.data.model.Folder
 import com.mashup.molink.utils.FolderDiffCallback
 
 class NavFolderAdapter : RecyclerView.Adapter<NavFolderAdapter.NavFolderViewHolder>() {
