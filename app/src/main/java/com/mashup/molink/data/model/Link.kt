@@ -24,6 +24,6 @@ data class Link(
     val url: String,
 
     @ColumnInfo(name = "folder_id")
-    @field:SerializedName("folder_id")
+    @field:SerializedName("folderId")
     val folderId: Int?
 )

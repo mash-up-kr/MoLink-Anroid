@@ -24,6 +24,6 @@ data class Folder(
     val color: String,
 
     @ColumnInfo(name = "parent_id")
-    @field:SerializedName("parent_id")
+    @field:SerializedName("parentId")
     val parentId: Int?
 )

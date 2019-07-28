@@ -2,6 +2,7 @@ package com.mashup.molink.data.repository
 
 import com.mashup.molink.data.StatusCode
 import com.mashup.molink.data.model.Category
+import com.mashup.molink.data.model.CommonData
 import com.mashup.molink.data.model.Folder
 import com.mashup.molink.data.source.local.FolderDao
 import com.mashup.molink.data.source.remote.FolderApi
@@ -21,6 +22,27 @@ class FolderRepository(
     fun getAllFolders(): Single<List<Folder>> {
         return folderDao.getAllFolders()
             .subscribeOn(Schedulers.io())
+    }
+
+    private fun getFoldersAll() {
+        folderApi.getFoldersAll()
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+                Dlog.d("getFoldersAll : $it")
+                if(it.data.isNotEmpty()) {
+                    it.data.forEach { folder ->
+                        if(folder.color.isNullOrEmpty()) {
+                            //TODO API 수정 필요
+                            val tempFolder = folder.copy(color = "#990099")
+                            folderDao.insert(tempFolder)
+                        } else {
+                            folderDao.insert(folder)
+                        }
+                    }
+                }
+            }){
+                Dlog.e(it.message)
+            }
     }
 
     fun flowableCategoryFolders(): Flowable<List<Folder>> {
@@ -64,7 +86,8 @@ class FolderRepository(
     }
 
     fun insertFolder(title: String, color: String): Disposable {
-        val body = Folder(id = 0, name = title, color = color, parentId = null)
+        //TODO parentId = null 이면 500 error -> 0 이어야 합니다.
+        val body = Folder(id = 0, name = title, color = color, parentId = 0)
 
         return folderApi.postFolders(body)
             .subscribeOn(Schedulers.io())
@@ -130,6 +153,8 @@ class FolderRepository(
                     it.data.forEach {
                         folderDao.insert(it)
                     }
+                } else if(it.statusCode == StatusCode.ZEOR) {
+                    getFoldersAll()
                 }
             }){
                 Dlog.e(it.message)

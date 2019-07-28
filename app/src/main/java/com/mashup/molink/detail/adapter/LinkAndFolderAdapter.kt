@@ -104,6 +104,8 @@ class LinkAndFolderAdapter : RecyclerView.Adapter<LinkAndFolderAdapter.BaseViewH
 
         fun onItemFolderClick(item: LinkAndFolderModel)
 
+        fun onItemFolderLongClick(item: LinkAndFolderModel)
+
         fun onItemLinkClick(item: LinkAndFolderModel)
 
         fun onItemLinkModifyClick(item: LinkAndFolderModel)
@@ -137,6 +139,11 @@ class LinkAndFolderAdapter : RecyclerView.Adapter<LinkAndFolderAdapter.BaseViewH
 
             itemView.setOnClickListener {
                 listener?.onItemFolderClick(linkAndFolderModel)
+            }
+
+            itemView.setOnLongClickListener {
+                listener?.onItemFolderLongClick(linkAndFolderModel)
+                false
             }
         }
 

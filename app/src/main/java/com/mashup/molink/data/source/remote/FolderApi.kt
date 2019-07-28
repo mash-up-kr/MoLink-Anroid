@@ -8,6 +8,10 @@ import retrofit2.http.*
 
 interface FolderApi {
 
+    @GET("/api/v1/folders/all")
+    fun getFoldersAll(
+    ): Single<CommonData<List<Folder>>>
+
     @POST("/api/v1/categories/folders")
     fun postCategoryFolders(
         @Body category: Category

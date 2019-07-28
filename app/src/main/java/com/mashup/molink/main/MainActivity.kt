@@ -137,11 +137,10 @@ class MainActivity : AppCompatActivity(), MainFolderAdapter.ItemClickListener, M
 
     private fun loadCategory() {
 
-        //TODO getCategoryFolders 로 변경 해보자
         folderRepository.flowableCategoryFolders()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Dlog.d("loadCategory")
+                //Dlog.d("loadCategory")
                 folderAdapter.updateListItems(it.toMutableList())
             }) {
                 Dlog.e(it.message)
