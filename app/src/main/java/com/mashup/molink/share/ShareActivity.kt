@@ -6,11 +6,9 @@ import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.mashup.molink.data.Folder
-import com.mashup.molink.data.Link
-import com.mashup.molink.data.MoLinkDataBase
+import com.mashup.molink.data.Injection
+import com.mashup.molink.data.model.Folder
 import com.mashup.molink.utils.Dlog
-import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -24,15 +22,16 @@ class ShareActivity : AppCompatActivity() {
     /**
      * Make by Black JIn
      */
-    private val linkDao by lazy { MoLinkDataBase.getInstance(this).getLinkDao() }
+    private val linkRepository by lazy { Injection.provideLinkRepository(this) }
 
-    private val folderDao by lazy { MoLinkDataBase.getInstance(this).getFolderDao() }
+    private val folderRepository by lazy { Injection.provideFolderRepository(this) }
+
 
     private val selectAdapter = SelectFolderAdapter()
 
     private val compositeDisposable = CompositeDisposable()
 
-    private var selectedFolder: Folder? = null
+    private lateinit var selectedFolder: Folder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,6 +130,7 @@ class ShareActivity : AppCompatActivity() {
         compositeDisposable.clear()
         super.onDestroy()
     }
+
     private fun getLinkUrl() {
 
         val intent = intent
@@ -166,7 +166,7 @@ class ShareActivity : AppCompatActivity() {
             override fun onPostExecute(result: org.jsoup.nodes.Document?) {
                 super.onPostExecute(result)
 
-                if(result != null) {
+                if (result != null) {
 
                     //TODO 일부 링크 에서는 header 에 원하는 정보가 없습니다.
                     try {
@@ -216,7 +216,7 @@ class ShareActivity : AppCompatActivity() {
     /**
      *  Make by Black JIn
      */
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
 
         val staggeredGridLayoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
 
@@ -238,22 +238,21 @@ class ShareActivity : AppCompatActivity() {
 
     private fun loadFolders() {
 
-        folderDao
+        folderRepository
             .getAllFolders()
-            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
 
                 selectedFolder = it[0]
-                tvStoreRouteFolder.text = selectedFolder?.name
+                tvStoreRouteFolder.text = selectedFolder.name
 
                 selectAdapter.setItem(it.toMutableList())
 
-        }){
-            Dlog.e(it.message)
-        }.also {
-            compositeDisposable.add(it)
-        }
+            }) {
+                Dlog.e(it.message)
+            }.also {
+                compositeDisposable.add(it)
+            }
     }
 
     private fun saveLink() {
@@ -265,18 +264,14 @@ class ShareActivity : AppCompatActivity() {
             toast("링크 제목을 입력해 주세요.")
         } else {
 
-            val link = Link(name = name, url = url, folderId = selectedFolder?.id)
-
-            Completable.fromCallable {
-                linkDao.insert(link)
-            }.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    toast("${selectedFolder?.name}에 링크 저장 성공!")
-                    finish()
-                }.also {
+            linkRepository.insertLink(name, url, selectedFolder.id) {
+                toast("${selectedFolder.name}에 링크 저장 성공!")
+                finish()
+            }
+                .also {
                     compositeDisposable.add(it)
                 }
+
 
         }
     }

@@ -3,12 +3,10 @@ package com.mashup.molink.share
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mashup.molink.R
-import com.mashup.molink.data.Folder
+import com.mashup.molink.data.model.Folder
 
 class SelectFolderAdapter : RecyclerView.Adapter<SelectFolderAdapter.FolderViewHolder>() {
 

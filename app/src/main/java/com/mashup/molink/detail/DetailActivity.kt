@@ -3,28 +3,29 @@ package com.mashup.molink.detail
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
-import com.mashup.molink.data.Folder
-import com.mashup.molink.data.Link
-import com.mashup.molink.data.MoLinkDataBase
+import com.mashup.molink.data.Injection
+import com.mashup.molink.data.model.Folder
+import com.mashup.molink.data.model.Link
+import com.mashup.molink.detail.adapter.DetailFolderAdapter
+import com.mashup.molink.detail.adapter.LinkAndFolderAdapter
+import com.mashup.molink.detail.adapter.NavFolderAdapter
+import com.mashup.molink.detail.adapter.model.LinkAndFolderModel
 import com.mashup.molink.dialog.ModifyFolderDialog
-import com.mashup.molink.extensions.runOnIoScheduler
-import com.mashup.molink.model.LinkAndFolderModel
 import com.mashup.molink.utils.Dlog
 import com.mashup.molink.utils.ScreenUtil
-import io.reactivex.Completable
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_detail.*
 import org.jetbrains.anko.dip
-import org.jetbrains.anko.toast
+import java.util.concurrent.TimeUnit
 
 class DetailActivity : AppCompatActivity()
     , NavFolderAdapter.ItemClickListener
@@ -52,13 +53,17 @@ class DetailActivity : AppCompatActivity()
         }
     }
 
-    private val folderDao by lazy { MoLinkDataBase.getInstance(this).getFolderDao() }
+    private val folderRepository by lazy {
+        Injection.provideFolderRepository(this)
+    }
 
-    private val linkDao by lazy { MoLinkDataBase.getInstance(this).getLinkDao() }
+    private val linkRepository by lazy {
+        Injection.provideLinkRepository(this)
+    }
 
     private val compositeDisposable = CompositeDisposable()
 
-    private var folderId = -1
+    private var currentFolderId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +84,7 @@ class DetailActivity : AppCompatActivity()
 
     override fun onItemClickRoot(folderId: Int) {
         navFolderAdapter.deleteItem(folderId)
-        loadRootFolderGoToFirst()
+        loadCategoryFolder()
     }
 
     /**
@@ -87,16 +92,27 @@ class DetailActivity : AppCompatActivity()
      */
     override fun onItemFolderClick(item: LinkAndFolderModel) {
 
-        folderDao.getFolderById(folderId)
-            .subscribeOn(Schedulers.io())
+        folderRepository.getFolderById(currentFolderId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { currentFolder ->
                 navFolderAdapter.addItem(currentFolder)
                 loadDetailFolderByParent(currentFolder.id, item.fid)
-
             }.also {
                 compositeDisposable.add(it)
             }
+    }
+
+    override fun onItemFolderLongClick(item: LinkAndFolderModel) {
+        //TODO 애니메이션 효과가 필요합니다.
+        val folder = Folder(
+            id = item.fid,
+            name = item.title!!,
+            color = item.color!!,
+            parentId = currentFolderId)
+
+        ModifyFolderDialog(this@DetailActivity, folder).apply {
+            setDialogClickListener(this@DetailActivity)
+        }.show()
     }
 
     override fun onItemLinkClick(item: LinkAndFolderModel) {
@@ -109,43 +125,39 @@ class DetailActivity : AppCompatActivity()
     }
 
     /**
-     * dialog
+     * folder dialog
      */
     override fun make(title: String, color: String) {
+        folderRepository.insertFolder(title, color, currentFolderId).also {
+            compositeDisposable.add(it)
+        }
 
-        val folder = Folder(name = title, color = color, parentId = folderId)
-
-        Single.fromCallable {
-                folderDao.insert(folder)
-            }.flatMap {
-                folderDao.getAllFolders()
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                val lastFolder = it[it.size - 1]
-                linkAndFolderAdapter.addFolder(lastFolder)
-            }) {
-                Dlog.e(it.message)
-            }.also {
-                compositeDisposable.add(it)
-            }
+        //TODO CRUD에 따를 데이터 속도
+        Handler().postDelayed({
+            loadChildData()
+        }, 1000)
     }
 
     override fun delete(id: Int) {
-        runOnIoScheduler {
-            folderDao.deleteFolderById(id)
-        }.also {
+        folderRepository.deleteFolderById(id).also {
             compositeDisposable.add(it)
         }
+
+        //TODO CRUD에 따를 데이터 속도
+        Handler().postDelayed({
+            loadChildData()
+        }, 1000)
     }
 
     override fun modify(folder: Folder) {
-        runOnIoScheduler {
-            folderDao.update(folder)
-        }.also {
+        folderRepository.updateFolder(folder).also {
             compositeDisposable.add(it)
         }
+
+        //TODO CRUD에 따를 데이터 속도
+        Handler().postDelayed({
+            loadChildData()
+        }, 1000)
     }
 
     /**
@@ -153,14 +165,14 @@ class DetailActivity : AppCompatActivity()
      */
     private fun getData() {
 
-        folderId = intent.getIntExtra(KEY_FOLDER_ID, -1)
-        Dlog.d("folderId : $folderId")
+        currentFolderId = intent.getIntExtra(KEY_FOLDER_ID, -1)
+        Dlog.d("currentFolderId : $currentFolderId")
 
-        if (folderId < 0) {
-            error("folderId must be not null")
+        if (currentFolderId < 0) {
+            error("currentFolderId must be not null")
         }
 
-        loadRootFolder()
+        loadCategoryFolder()
     }
 
     private fun initView() {
@@ -176,7 +188,7 @@ class DetailActivity : AppCompatActivity()
                     override fun onItemSelected(layoutPosition: Int) {
                         val folder = detailFolderAdapter.getItem(layoutPosition)
                         folder?.let {
-                            folderId = it.id
+                            currentFolderId = it.id
                             loadChildData()
                         }
                     }
@@ -212,39 +224,26 @@ class DetailActivity : AppCompatActivity()
         }
     }
 
-    private fun loadRootFolder() {
+    private fun loadCategoryFolder() {
 
-        folderDao.getAllFolders()
-            .subscribeOn(Schedulers.io())
+        folderRepository.getCategoryFolders()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { folders ->
+            .subscribe({
 
-                val items = folders.filter { it.parentId == null }
+                if (detailFolderAdapter.itemCount != 0) {
+                    //nav 마지막 아이템을 누른 경우 currentFolderId 초기화
+                    currentFolderId = it[0].id
+                }
 
-                detailFolderAdapter.updateListItems(items.toMutableList())
-                val pos = detailFolderAdapter.getPosition(folderId)
+                detailFolderAdapter.updateListItems(it.toMutableList())
+
+                val pos = detailFolderAdapter.getPosition(currentFolderId)
                 rvActivityDetailViewFolder.scrollToPosition(pos)
 
                 loadChildData()
 
-            }.also {
-                compositeDisposable.add(it)
-            }
-    }
-
-    private fun loadRootFolderGoToFirst() {
-
-        folderDao.getAllFolders()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { folders ->
-
-                val items = folders.filter { it.parentId == null }
-                detailFolderAdapter.updateListItems(items.toMutableList())
-                this.folderId = items[0].id
-
-                loadChildData()
-
+            }) {
+                Dlog.e(it.message)
             }.also {
                 compositeDisposable.add(it)
             }
@@ -252,15 +251,17 @@ class DetailActivity : AppCompatActivity()
 
     private fun loadDetailFolderByParent(folderId: Int, focusId: Int) {
 
-        folderDao.getFoldersByParentId(folderId)
-            .subscribeOn(Schedulers.io())
+        folderRepository.getFoldersByParentId(folderId)
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Dlog.d("loadDetailFolderByParentWithFocus : $it")
+
                 if (it.isNotEmpty()) {
 
-                    this.folderId = focusId
                     detailFolderAdapter.updateListItems(it.toMutableList())
-                    val pos = detailFolderAdapter.getPosition(this.folderId)
+
+                    currentFolderId = focusId
+
+                    val pos = detailFolderAdapter.getPosition(currentFolderId)
                     rvActivityDetailViewFolder.scrollToPosition(pos)
 
                     loadChildData()
@@ -275,12 +276,13 @@ class DetailActivity : AppCompatActivity()
 
     private fun loadDetailFolderByParent(folderId: Int) {
 
-        folderDao.getFoldersByParentId(folderId)
-            .subscribeOn(Schedulers.io())
+        folderRepository.getFoldersByParentId(folderId)
             .subscribe({
                 if (it.isNotEmpty()) {
-                    this.folderId = it[0].id
+
+                    currentFolderId = it[0].id
                     detailFolderAdapter.updateListItems(it.toMutableList())
+
                     loadChildData()
                 }
 
@@ -293,35 +295,46 @@ class DetailActivity : AppCompatActivity()
 
     private fun loadChildData() {
 
-        val childFolder = folderDao.getFoldersByParentId(folderId)
+        val childFolder = folderRepository.getFoldersByParentId(currentFolderId)
 
-        val childLink = linkDao.getLinksByFolderId(folderId)
+        val childLink = linkRepository.getLinksByFolderId(currentFolderId)
 
-        Single.zip(childFolder, childLink,
-            BiFunction<List<Folder>, List<Link>, List<LinkAndFolderModel>>
-            { folders, links ->
+        Single
+            .zip(childFolder, childLink,
+                BiFunction<List<Folder>, List<Link>, List<LinkAndFolderModel>>
+                { folders, links ->
 
-                val items = arrayListOf<LinkAndFolderModel>()
+                    val items = arrayListOf<LinkAndFolderModel>()
 
-                for (item in folders) {
-                    val temp =
-                        LinkAndFolderModel(fid = item.id, title = item.name, color = item.color, viewType = 1)
-                    items.add(temp)
-                }
+                    for (item in folders) {
+                        val temp =
+                            LinkAndFolderModel(
+                                fid = item.id,
+                                title = item.name,
+                                color = item.color,
+                                viewType = 1
+                            )
+                        items.add(temp)
+                    }
 
-                for (item in links) {
-                    val temp =
-                        LinkAndFolderModel(lid = item.id, title = item.name, url = item.url, viewType = 2)
-                    items.add(temp)
-                }
+                    for (item in links) {
+                        val temp =
+                            LinkAndFolderModel(
+                                lid = item.id,
+                                title = item.name,
+                                url = item.url,
+                                viewType = 2
+                            )
+                        items.add(temp)
+                    }
 
-                items.sortBy { it.viewType }
+                    items.sortBy { it.viewType }
 
-                items
-            })
-            .subscribeOn(Schedulers.io())
+                    items
+                })
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                Dlog.e("$currentFolderId -> loadChildData")
                 linkAndFolderAdapter.setItems(it.toMutableList())
             }) {
                 Dlog.e(it.message)
@@ -329,5 +342,4 @@ class DetailActivity : AppCompatActivity()
                 compositeDisposable.add(it)
             }
     }
-
 }

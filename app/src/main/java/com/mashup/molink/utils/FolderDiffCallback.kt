@@ -1,7 +1,7 @@
 package com.mashup.molink.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.mashup.molink.data.Folder
+import com.mashup.molink.data.model.Folder
 
 //https://developer.android.com/reference/android/support/v7/util/DiffUtil.Callback
 class FolderDiffCallback (

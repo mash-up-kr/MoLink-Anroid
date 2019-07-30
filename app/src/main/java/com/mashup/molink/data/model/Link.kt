@@ -1,4 +1,4 @@
-package com.mashup.molink.data
+package com.mashup.molink.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -18,12 +18,12 @@ import com.google.gson.annotations.SerializedName
     ]
 )
 data class Link(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    @PrimaryKey
+    val id: Int,
     val name: String,
     val url: String,
 
     @ColumnInfo(name = "folder_id")
-    @field:SerializedName("folder_id")
+    @field:SerializedName("folderId")
     val folderId: Int?
 )

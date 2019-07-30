@@ -1,4 +1,4 @@
-package com.mashup.molink.data
+package com.mashup.molink.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -18,12 +18,12 @@ import com.google.gson.annotations.SerializedName
     ]
 )
 data class Folder(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    @PrimaryKey
+    val id: Int,
     val name: String,
     val color: String,
 
     @ColumnInfo(name = "parent_id")
-    @field:SerializedName("parent_id")
+    @field:SerializedName("parentId")
     val parentId: Int?
 )

@@ -2,26 +2,22 @@ package com.mashup.molink.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mashup.molink.R
-import com.mashup.molink.data.Folder
-import com.mashup.molink.data.MoLinkDataBase
+import com.mashup.molink.data.Injection
+import com.mashup.molink.data.model.Folder
 import com.mashup.molink.detail.DetailActivity
 import com.mashup.molink.dialog.ModifyFolderDialog
-import com.mashup.molink.extensions.runOnIoScheduler
+import com.mashup.molink.main.adapter.MainFolderAdapter
+import com.mashup.molink.utils.ColorUtil
 import com.mashup.molink.utils.Dlog
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.longToast
-import org.jetbrains.anko.toast
 import java.util.*
-import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), MainFolderAdapter.ItemClickListener, ModifyFolderDialog.DialogClickListener {
 
@@ -36,7 +32,9 @@ class MainActivity : AppCompatActivity(), MainFolderAdapter.ItemClickListener, M
         }
     }
 
-    private val folderDao by lazy { MoLinkDataBase.getInstance(this).getFolderDao() }
+    private val folderRepository by lazy {
+        Injection.provideFolderRepository(this)
+    }
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -47,6 +45,7 @@ class MainActivity : AppCompatActivity(), MainFolderAdapter.ItemClickListener, M
         getData()
         initRecyclerView()
         initButton()
+        loadCategory()
 
     }
 
@@ -61,8 +60,8 @@ class MainActivity : AppCompatActivity(), MainFolderAdapter.ItemClickListener, M
     override fun onItemClick(folder: Folder) {
         startActivity(
             Intent(this@MainActivity, DetailActivity::class.java).apply {
-                    putExtra(DetailActivity.KEY_FOLDER_ID, folder.id)
-                }
+                putExtra(DetailActivity.KEY_FOLDER_ID, folder.id)
+            }
         )
     }
 
@@ -73,44 +72,29 @@ class MainActivity : AppCompatActivity(), MainFolderAdapter.ItemClickListener, M
     }
 
     /**
-     * dialog
+     * folder dialog
      */
     override fun make(title: String, color: String) {
-        runOnIoScheduler {
-            val folder =  Folder(name = title, color = color, parentId = null)
-            folderDao.insert(folder)
-            loadData()
-        }.also {
+        folderRepository.insertFolder(title, color).also {
             compositeDisposable.add(it)
         }
-        /*folderAdapter.addItem(
-            Folder(name = title, color = color, parentId = null)
-        )*/
     }
 
     override fun delete(id: Int) {
-        if(folderAdapter.itemCount <= 1) {
+        if (folderAdapter.itemCount <= 1) {
             longToast("적어도 1개의 폴더가 있어야 합니다 :)")
             return
         }
 
-        runOnIoScheduler {
-            folderDao.deleteFolderById(id)
-            loadData()
-        }.also {
+        folderRepository.deleteFolderById(id).also {
             compositeDisposable.add(it)
         }
-        //folderAdapter.deleteItem(id)
     }
 
     override fun modify(folder: Folder) {
-        runOnIoScheduler {
-            folderDao.update(folder)
-            loadData()
-        }.also {
+        folderRepository.updateFolder(folder).also {
             compositeDisposable.add(it)
         }
-        //folderAdapter.modifyItem(folder)
     }
 
     /**
@@ -118,41 +102,20 @@ class MainActivity : AppCompatActivity(), MainFolderAdapter.ItemClickListener, M
      */
     private fun getData() {
 
-        val colors = arrayOf(
-            String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(this, R.color.purpleish_blue)),
-            String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(this, R.color.maize)),
-            String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(this, R.color.lightblue)),
-            String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(this, R.color.lighter_purple)),
-            String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(this, R.color.lightish_green)),
-            String.format("#%06X", 0xFFFFFF and ContextCompat.getColor(this, R.color.pig_pink)))
-
         val interests = intent?.getSerializableExtra(KEY_INTERESTS)
-        Dlog.d("interests : $interests")
 
-        if(interests is ArrayList<*>) {
+        if (interests is ArrayList<*>) {
 
-            runOnIoScheduler {
-                folderDao.clearAll()
+            val temp = arrayListOf<String>()
 
-                for(interest in interests) {
-                    Dlog.d("interest : $interest")
-
-                    val random = Random()
-                    val num = random.nextInt(5)
-
-                    val folder = Folder(name = interest.toString(), color = colors[num], parentId = null)
-                    folderDao.insert(folder)
-                }
-
-                loadData()
-
-            }.also {
-                compositeDisposable.add(it)
+            for(interest in interests) {
+                temp.add(interest.toString())
+                Dlog.d("interest : $interest")
             }
-        } else {
-            loadData()
-        }
 
+            folderRepository.insertCategoryFolders(temp)
+                .also { compositeDisposable.add(it) }
+        }
     }
 
     private fun initRecyclerView() {
@@ -172,21 +135,26 @@ class MainActivity : AppCompatActivity(), MainFolderAdapter.ItemClickListener, M
         }
     }
 
-    private fun loadData() {
+    private fun loadCategory() {
 
-        folderDao.getAllFolders()
-            .subscribeOn(Schedulers.io())
+        folderRepository.flowableCategoryFolders()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {folders ->
-
-                Dlog.e("getAllFolders : $folders")
-                val items = folders.filter { it.parentId == null }
-                Dlog.e("items : $items")
-
-                folderAdapter.updateListItems(items.toMutableList())
-            }.also {
+            .subscribe({
+                //Dlog.d("loadCategory")
+                folderAdapter.updateListItems(it.toMutableList())
+            }) {
+                Dlog.e(it.message)
+            }
+            .also {
                 compositeDisposable.add(it)
             }
+    }
 
+    private fun showProgress() {
+        pbActivityMain.visibility = View.VISIBLE
+    }
+
+    private fun hideProgress() {
+        pbActivityMain.visibility = View.GONE
     }
 }
