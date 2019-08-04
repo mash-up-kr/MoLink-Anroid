@@ -11,6 +11,7 @@ import com.mashup.molink.R
 import com.mashup.molink.data.model.Folder
 import com.mashup.molink.data.model.Link
 import com.mashup.molink.detail.adapter.model.LinkAndFolderModel
+import com.mashup.molink.utils.Dlog
 
 class LinkAndFolderAdapter : RecyclerView.Adapter<LinkAndFolderAdapter.BaseViewHolder>() {
 
@@ -48,49 +49,59 @@ class LinkAndFolderAdapter : RecyclerView.Adapter<LinkAndFolderAdapter.BaseViewH
     }
 
     fun setItems(items: MutableList<LinkAndFolderModel>) {
-        this.items = items
+        this.items.clear()
+        this.items.addAll(items)
         notifyDataSetChanged()
     }
-    
-    fun addFolder(item: Folder) {
-        val temp = LinkAndFolderModel(
-            fid = item.id,
-            title = item.name,
-            color = item.color,
-            viewType = 1
-        )
 
-        //폴더의 마지막 위치를 가져옴
-        var index = 0
-        for(i in 0 until items.size) {
-            if(items[i].viewType == 2) {
-                index = i
-                break
-            }
+    fun setFolders(folders: List<Folder>) {
+
+        val newItems = mutableListOf<LinkAndFolderModel>()
+
+        items.filter { it.viewType == 2 }
+            .forEach { newItems.add(it) }
+
+        Dlog.d("folders newItems : $newItems")
+        items = newItems
+
+        for(folder in folders) {
+            val temp =
+                LinkAndFolderModel(
+                    fid = folder.id,
+                    title = folder.name,
+                    color = folder.color,
+                    viewType = 1
+                )
+            items.add(temp)
+            items.sortBy { it.viewType }
         }
-        items.add(index, temp)
-        notifyItemInserted(index)
+
+        notifyDataSetChanged()
     }
 
-    fun modifyLink(item: Link) {
-        for((index, value) in items.filter { it.viewType == 2 }.withIndex()) {
-            if(value.lid == item.id) {
-                val temp = items[index].copy(title = item.name, url = item.url)
-                items[index] = temp
-                notifyItemChanged(index)
-                break
-            }
-        }
-    }
+    fun setLinks(links: List<Link>) {
 
-    fun deleteLink(item: Link) {
-        for((index, value) in items.filter { it.viewType == 2 }.withIndex()) {
-            if(value.lid == item.id) {
-                items.removeAt(index)
-                notifyItemRemoved(index)
-                break
-            }
+        val newItems = mutableListOf<LinkAndFolderModel>()
+
+        items.filter { it.viewType == 1 }
+            .forEach { newItems.add(it) }
+
+        Dlog.d("setLinks newItems : $newItems")
+        items = newItems
+
+        for(link in links) {
+            val temp =
+                LinkAndFolderModel(
+                    lid = link.id,
+                    title = link.name,
+                    url = link.url,
+                    viewType = 2
+                )
+            items.add(temp)
+            items.sortBy { it.viewType }
         }
+
+        notifyDataSetChanged()
     }
 
     /**

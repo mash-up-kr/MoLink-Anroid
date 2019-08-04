@@ -4,10 +4,13 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.mashup.molink.data.Injection
 import com.mashup.molink.data.model.Folder
+import com.mashup.molink.data.model.Link
+import com.mashup.molink.data.repository.LinkRepository
 import com.mashup.molink.utils.Dlog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -26,6 +29,14 @@ class ShareActivity : AppCompatActivity() {
 
     private val folderRepository by lazy { Injection.provideFolderRepository(this) }
 
+    companion object {
+
+        const val KEY_LINK_ID = "key_link_id"
+
+    }
+
+    private var linkId = -1
+
 
     private val selectAdapter = SelectFolderAdapter()
 
@@ -39,7 +50,14 @@ class ShareActivity : AppCompatActivity() {
 
         tvSharedUrl.movementMethod = ScrollingMovementMethod()
 
-        getLinkUrl()
+        intent.getIntExtra(KEY_LINK_ID, -1).let {
+            if(it > 0) {
+                linkId = it
+                initModifyMode()
+            } else {
+                getLinkUrl()
+            }
+        }
 
         initRecyclerView()
         loadFolders()
@@ -255,6 +273,42 @@ class ShareActivity : AppCompatActivity() {
             }
     }
 
+    private fun initModifyMode() {
+
+        linkRepository.getLinkById(linkId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({link ->
+
+                tvSharedUrl.text = link.url
+                etSharedTitle.setText(link.name)
+
+                 folderRepository.getFolderById(link.folderId!!).subscribe({folder ->
+                     selectedFolder = folder
+                     tvStoreRouteFolder.text = folder.name
+                }){
+                     Dlog.e(it.message)
+                 }
+
+            }){
+                Dlog.e(it.message)
+            }.also {
+                compositeDisposable.add(it)
+            }
+
+        tvLinkSaveTitle.text = "Link Modify"
+
+        btnLinkSave.visibility = View.GONE
+        btnLinkModify.visibility = View.VISIBLE
+        btnLinkDelete.visibility = View.VISIBLE
+
+        btnLinkModify.setOnClickListener {
+            modifyLink()
+        }
+        btnLinkDelete.setOnClickListener {
+            deleteLink()
+        }
+    }
+
     private fun saveLink() {
 
         val url = tvSharedUrl.text.toString()
@@ -267,12 +321,36 @@ class ShareActivity : AppCompatActivity() {
             linkRepository.insertLink(name, url, selectedFolder.id) {
                 toast("${selectedFolder.name}에 링크 저장 성공!")
                 finish()
+            }.also {
+                compositeDisposable.add(it)
             }
-                .also {
-                    compositeDisposable.add(it)
-                }
+
+        }
+    }
 
 
+    private fun modifyLink() {
+
+        val url = tvSharedUrl.text.toString()
+        val name = etSharedTitle.text.toString()
+
+        val link = Link(linkId, name, url, selectedFolder.id)
+
+        linkRepository.updateLink(link) {
+            toast("${selectedFolder.name}에 링크 수정")
+            finish()
+        }.also {
+            compositeDisposable.add(it)
+        }
+    }
+
+    private fun deleteLink() {
+
+        linkRepository.deleteLinkById(linkId) {
+            toast("삭제 완료")
+            finish()
+        }.also {
+            compositeDisposable.add(it)
         }
     }
 }

@@ -23,6 +23,9 @@ interface FolderDao {
     @Query("SELECT * FROM folders WHERE parent_id = :parentId")
     fun getFoldersByParentId(parentId: Int): Single<List<Folder>>
 
+    @Query("SELECT * FROM folders WHERE parent_id = :parentId")
+    fun flowableFoldersByParentId(parentId: Int): Flowable<List<Folder>>
+
     @Query("DELETE FROM folders WHERE id = :id")
     fun deleteFolderById(id: Int)
 

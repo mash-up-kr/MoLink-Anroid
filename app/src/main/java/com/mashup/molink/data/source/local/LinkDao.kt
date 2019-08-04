@@ -15,6 +15,9 @@ interface LinkDao {
     fun getLinkById(id: Int): Single<Link>
 
     @Query("SELECT * FROM links WHERE folder_id = :folderId")
+    fun flowableLinksByFolderId(folderId: Int): Flowable<List<Link>>
+
+    @Query("SELECT * FROM links WHERE folder_id = :folderId")
     fun getLinksByFolderId(folderId: Int): Single<List<Link>>
 
     @Query("DELETE FROM links WHERE id = :id")

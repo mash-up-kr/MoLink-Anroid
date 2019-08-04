@@ -16,10 +16,10 @@ import com.mashup.molink.detail.adapter.LinkAndFolderAdapter
 import com.mashup.molink.detail.adapter.NavFolderAdapter
 import com.mashup.molink.detail.adapter.model.LinkAndFolderModel
 import com.mashup.molink.dialog.ModifyFolderDialog
+import com.mashup.molink.share.ShareActivity
 import com.mashup.molink.utils.Dlog
 import com.mashup.molink.utils.ScreenUtil
 import io.reactivex.Flowable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
@@ -108,7 +108,8 @@ class DetailActivity : AppCompatActivity()
             id = item.fid,
             name = item.title!!,
             color = item.color!!,
-            parentId = currentFolderId)
+            parentId = currentFolderId
+        )
 
         ModifyFolderDialog(this@DetailActivity, folder).apply {
             setDialogClickListener(this@DetailActivity)
@@ -121,7 +122,11 @@ class DetailActivity : AppCompatActivity()
     }
 
     override fun onItemLinkModifyClick(item: LinkAndFolderModel) {
-        //수정 화면 제거
+        //TODO 애니메이션 효과가 필요합니다.
+        val intent = Intent(this, ShareActivity::class.java).apply {
+            putExtra(ShareActivity.KEY_LINK_ID, item.lid)
+        }
+        startActivity(intent)
     }
 
     /**
@@ -131,33 +136,18 @@ class DetailActivity : AppCompatActivity()
         folderRepository.insertFolder(title, color, currentFolderId).also {
             compositeDisposable.add(it)
         }
-
-        //TODO CRUD에 따를 데이터 속도
-        Handler().postDelayed({
-            loadChildData()
-        }, 1000)
     }
 
     override fun delete(id: Int) {
         folderRepository.deleteFolderById(id).also {
             compositeDisposable.add(it)
         }
-
-        //TODO CRUD에 따를 데이터 속도
-        Handler().postDelayed({
-            loadChildData()
-        }, 1000)
     }
 
     override fun modify(folder: Folder) {
         folderRepository.updateFolder(folder).also {
             compositeDisposable.add(it)
         }
-
-        //TODO CRUD에 따를 데이터 속도
-        Handler().postDelayed({
-            loadChildData()
-        }, 1000)
     }
 
     /**
@@ -188,6 +178,7 @@ class DetailActivity : AppCompatActivity()
                     override fun onItemSelected(layoutPosition: Int) {
                         val folder = detailFolderAdapter.getItem(layoutPosition)
                         folder?.let {
+                            //2번 이상씩 작돔됨
                             currentFolderId = it.id
                             loadChildData()
                         }
@@ -295,11 +286,10 @@ class DetailActivity : AppCompatActivity()
 
     private fun loadChildData() {
 
-        val childFolder = folderRepository.getFoldersByParentId(currentFolderId)
+        val childFolder = folderRepository.flowableFoldersByParentId(currentFolderId)
+        val childLink = linkRepository.flowableLinksByFolderId(currentFolderId)
 
-        val childLink = linkRepository.getLinksByFolderId(currentFolderId)
-
-        Single
+        Flowable
             .zip(childFolder, childLink,
                 BiFunction<List<Folder>, List<Link>, List<LinkAndFolderModel>>
                 { folders, links ->
@@ -332,14 +322,43 @@ class DetailActivity : AppCompatActivity()
 
                     items
                 })
+            .debounce(250, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Dlog.e("$currentFolderId -> loadChildData")
                 linkAndFolderAdapter.setItems(it.toMutableList())
+                setChildData(childFolder, childLink)
             }) {
                 Dlog.e(it.message)
             }.also {
                 compositeDisposable.add(it)
             }
+    }
+
+    private fun setChildData(childFolder: Flowable<List<Folder>>, childLink: Flowable<List<Link>>) {
+
+        compositeDisposable.clear()
+
+        childFolder
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { folders ->
+
+                Dlog.d("folders : $folders")
+                linkAndFolderAdapter.setFolders(folders)
+
+            }.also {
+                compositeDisposable.add(it)
+            }
+
+        childLink
+           .observeOn(AndroidSchedulers.mainThread())
+           .subscribe { links ->
+
+               Dlog.d("links : $links")
+               linkAndFolderAdapter.setLinks(links)
+
+           }.also {
+               compositeDisposable.add(it)
+           }
     }
 }

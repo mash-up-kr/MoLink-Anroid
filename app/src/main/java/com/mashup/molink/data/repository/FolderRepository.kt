@@ -2,13 +2,10 @@ package com.mashup.molink.data.repository
 
 import com.mashup.molink.data.StatusCode
 import com.mashup.molink.data.model.Category
-import com.mashup.molink.data.model.CommonData
 import com.mashup.molink.data.model.Folder
 import com.mashup.molink.data.source.local.FolderDao
 import com.mashup.molink.data.source.remote.FolderApi
-import com.mashup.molink.extensions.runOnIoScheduler
 import com.mashup.molink.utils.Dlog
-import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
@@ -22,27 +19,6 @@ class FolderRepository(
     fun getAllFolders(): Single<List<Folder>> {
         return folderDao.getAllFolders()
             .subscribeOn(Schedulers.io())
-    }
-
-    private fun getFoldersAll() {
-        folderApi.getFoldersAll()
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                Dlog.d("getFoldersAll : $it")
-                if(it.data.isNotEmpty()) {
-                    it.data.forEach { folder ->
-                        if(folder.color.isNullOrEmpty()) {
-                            //TODO API 수정 필요
-                            val tempFolder = folder.copy(color = "#990099")
-                            folderDao.insert(tempFolder)
-                        } else {
-                            folderDao.insert(folder)
-                        }
-                    }
-                }
-            }){
-                Dlog.e(it.message)
-            }
     }
 
     fun flowableCategoryFolders(): Flowable<List<Folder>> {
@@ -66,6 +42,11 @@ class FolderRepository(
 
     fun getFolderById(id: Int): Single<Folder> {
         return folderDao.getFolderById(id)
+            .subscribeOn(Schedulers.io())
+    }
+
+    fun flowableFoldersByParentId(parentId: Int): Flowable<List<Folder>> {
+        return folderDao.flowableFoldersByParentId(parentId)
             .subscribeOn(Schedulers.io())
     }
 
@@ -98,19 +79,6 @@ class FolderRepository(
             }){
                 Dlog.e(it.message)
             }
-
-        /*return folderApi.getFolderId()
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-
-                Dlog.d("insertFolder -> folder id : $it")
-                val folder =
-                    Folder(id = it, name = title, color = color, parentId = null)
-                folderDao.insert(folder)
-
-            }) {
-                Dlog.e(it.message)
-            }*/
     }
 
     fun insertFolder(title: String, color: String, parentId: Int): Disposable {
@@ -126,19 +94,6 @@ class FolderRepository(
             }){
                 Dlog.e(it.message)
             }
-
-        /*return folderApi.getFolderId()
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-
-                Dlog.d("insertFolder -> folder id : $it")
-                val folder =
-                    Folder(id = it, name = title, color = color, parentId = parentId)
-                folderDao.insert(folder)
-
-            }) {
-                Dlog.e(it.message)
-            }*/
     }
 
     fun insertCategoryFolders(interests: List<String>): Disposable {
@@ -154,7 +109,24 @@ class FolderRepository(
                         folderDao.insert(it)
                     }
                 } else if(it.statusCode == StatusCode.ZEOR) {
-                    getFoldersAll()
+                    //TODO API 수정 필요
+                    folderApi.getFoldersAll()
+                        .subscribeOn(Schedulers.io())
+                        .subscribe({ folders ->
+                            Dlog.d("getFoldersAll : $folders")
+                            if(folders.data.isNotEmpty()) {
+                                folders.data.forEach { folder ->
+                                    if(folder.color.isEmpty()) {
+                                        val tempFolder = folder.copy(color = "#000000")
+                                        folderDao.insert(tempFolder)
+                                    } else {
+                                        folderDao.insert(folder)
+                                    }
+                                }
+                            }
+                        }){
+                            Dlog.e(it.message)
+                        }
                 }
             }){
                 Dlog.e(it.message)

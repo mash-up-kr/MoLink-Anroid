@@ -140,7 +140,6 @@ class MainActivity : AppCompatActivity(), MainFolderAdapter.ItemClickListener, M
         folderRepository.flowableCategoryFolders()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                //Dlog.d("loadCategory")
                 folderAdapter.updateListItems(it.toMutableList())
             }) {
                 Dlog.e(it.message)
