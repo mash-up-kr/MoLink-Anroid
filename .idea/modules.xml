@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MoLink.iml" filepath="$PROJECT_DIR$/MoLink.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MoLink-Anroid.iml" filepath="$PROJECT_DIR$/MoLink-Anroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

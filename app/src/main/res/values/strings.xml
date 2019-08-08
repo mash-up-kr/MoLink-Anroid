@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MoLink</string>
+    <string name="sign_up">
+        <b>
+            <u>Sign Up</u>
+        </b>
+    </string>
 </resources>
+
+
