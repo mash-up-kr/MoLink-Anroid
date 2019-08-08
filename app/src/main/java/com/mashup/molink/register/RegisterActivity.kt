@@ -34,6 +34,7 @@ class RegisterActivity : AppCompatActivity(), TextWatcher {
             } else {
                 Toast.makeText(this@RegisterActivity, "회원가입 되었습니다 :)", Toast.LENGTH_SHORT).show()
 
+
                 var intent = Intent(this@RegisterActivity, MainActivity::class.java)
                 startActivity(intent)
                 finish()
