@@ -95,4 +95,7 @@ dependencies {
 
     //error : Mockito cannot mock/spy because : - final class
     testImplementation 'org.mockito:mockito-inline:2.23.0'
+
+    //ted permission
+    implementation "gun0912.ted:tedpermission:2.1.0"
 }
