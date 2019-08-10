@@ -2,6 +2,7 @@ package com.mashup.molink.register
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import android.text.TextWatcher
 import android.widget.Toast
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.mashup.molink.interest.InterestActivity
 import com.mashup.molink.main.MainActivity
 import com.mashup.molink.utils.Dlog
 import kotlinx.android.synthetic.main.activity_register.*
@@ -20,8 +22,6 @@ import android.provider.MediaStore
 import android.database.Cursor
 import java.io.File
 import android.graphics.BitmapFactory
-import android.util.Log
-import java.io.IOException
 import android.os.Build
 import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.ShapeDrawable
@@ -61,7 +61,13 @@ class RegisterActivity : AppCompatActivity(), TextWatcher {
             else {
                 Toast.makeText(this@RegisterActivity, "회원가입 되었습니다 :)", Toast.LENGTH_SHORT).show()
 
-                var intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                var prefs = getSharedPreferences("Pref", Context.MODE_PRIVATE)
+                prefs.edit().putBoolean("isLogin", true).apply()
+                prefs.edit().putString("id", etID.text.toString()).apply()
+                prefs.edit().putString("pwd", etPassword.text.toString()).apply()
+                prefs.edit().putString("userName", etUserName.text.toString()).apply()
+
+                var intent = Intent(this@RegisterActivity, InterestActivity::class.java)
                 startActivity(intent)
                 finish()
             }
