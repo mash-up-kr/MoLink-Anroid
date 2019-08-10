@@ -1,5 +1,6 @@
 package com.mashup.molink.register
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +9,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
 import com.mashup.molink.R
+import com.mashup.molink.interest.InterestActivity
 import com.mashup.molink.main.MainActivity
+import com.mashup.molink.splash.SplashActivity
 import com.mashup.molink.utils.Dlog
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -34,8 +37,13 @@ class RegisterActivity : AppCompatActivity(), TextWatcher {
             } else {
                 Toast.makeText(this@RegisterActivity, "회원가입 되었습니다 :)", Toast.LENGTH_SHORT).show()
 
+                var prefs = getSharedPreferences("Pref", Context.MODE_PRIVATE)
+                prefs.edit().putBoolean("isLogin", true).apply()
+                prefs.edit().putString("id", etID.text.toString()).apply()
+                prefs.edit().putString("pwd", etPassword.text.toString()).apply()
+                prefs.edit().putString("userName", etUserName.text.toString()).apply()
 
-                var intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                var intent = Intent(this@RegisterActivity, InterestActivity::class.java)
                 startActivity(intent)
                 finish()
             }

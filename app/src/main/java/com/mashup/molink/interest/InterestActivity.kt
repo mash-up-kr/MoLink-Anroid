@@ -68,6 +68,10 @@ class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListene
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_interest)
 
+        var prefs = getSharedPreferences("Pref", Context.MODE_PRIVATE)
+        prefs.edit().putBoolean("isFirstRun", false).apply()
+        Dlog.e("isFirstrun " + prefs.getBoolean("isFirstRun", false))
+
         rvActivityInterest.layoutManager = GridLayoutManager(this, 3)
         rvActivityInterest.adapter = adapter
 
@@ -75,7 +79,9 @@ class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListene
 
         adapter.setClickListener(this)
 
+
         btnActivityInterestOk.setOnClickListener {
+
             val list = ArrayList<String>()
             Dlog.e(adapter.getItem().size.toString())
 
@@ -86,8 +92,12 @@ class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListene
                 }
             }
 
-            var prefs = getSharedPreferences("Pref", Context.MODE_PRIVATE)
-            prefs.edit().putBoolean("isFirstRun", false).apply()
+            if(btnActivityInterestOk.isEnabled){
+                var prefs = getSharedPreferences("Pref", Context.MODE_PRIVATE)
+                prefs.edit().putBoolean("isFirstRun", true).apply()
+                Dlog.e("isFirstrun//" + prefs.getBoolean("isFirstRun", false))
+
+            }
 
             var intent = Intent(this@InterestActivity, MainActivity::class.java)
             intent.putExtra(MainActivity.KEY_INTERESTS, list)
