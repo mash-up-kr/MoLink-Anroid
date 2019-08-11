@@ -7,6 +7,7 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.mashup.molink.R
 import com.mashup.molink.interest.InterestActivity
+import com.mashup.molink.login.LoginActivity
 import com.mashup.molink.main.MainActivity
 import com.mashup.molink.utils.Dlog
 import org.jetbrains.anko.startActivityForResult
@@ -30,14 +31,21 @@ class SplashActivity : AppCompatActivity() {
             isFirstRun = prefs.getBoolean("isFirstRun",true)
 
             Dlog.d("isFirstRun: " + isFirstRun)
-            if(isFirstRun){
-                var intent = Intent(this@SplashActivity, InterestActivity::class.java);
+
+            if(!prefs.getBoolean("isLogin", false)){
+                var intent = Intent(this@SplashActivity, LoginActivity::class.java);
                 startActivity(intent)
                 finish()
-            } else{
-                var intent = Intent(this@SplashActivity, MainActivity::class.java);
-                startActivity(intent)
-                finish()
+            }else{
+                if(!prefs.getBoolean("isFirstRun", false)){
+                    var intent = Intent(this@SplashActivity, InterestActivity::class.java);
+                    startActivity(intent)
+                    finish()
+                } else {
+                    var intent = Intent(this@SplashActivity, MainActivity::class.java);
+                    startActivity(intent)
+                    finish()
+                }
             }
         }
     }
