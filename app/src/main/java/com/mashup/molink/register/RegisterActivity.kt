@@ -13,18 +13,22 @@ import android.widget.Toast
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.mashup.molink.interest.InterestActivity
-import com.mashup.molink.main.MainActivity
 import com.mashup.molink.utils.Dlog
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.btnSignUp
 import java.util.ArrayList
 import android.provider.MediaStore
 import android.database.Cursor
+import android.graphics.Bitmap
 import java.io.File
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.ShapeDrawable
+import android.util.Base64
+import android.util.Log
+import com.mashup.molink.R
+import java.io.ByteArrayOutputStream
 import java.util.regex.Pattern
 
 
@@ -36,10 +40,11 @@ class RegisterActivity : AppCompatActivity(), TextWatcher {
 
     private val PICK_FROM_ALBUM = 1
     private var tempFile: File? = null // 갤러리에서 선택한 파일
+    private var originalBitmap:Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.mashup.molink.R.layout.activity_register)
+        setContentView(R.layout.activity_register)
 
         etID.addTextChangedListener(this)
         etPasswordCheck.addTextChangedListener(this)
@@ -47,6 +52,9 @@ class RegisterActivity : AppCompatActivity(), TextWatcher {
         btnGallery.setOnClickListener {
             goToAlbum()
         }
+
+        // 프로필 비트맵 초기화 : 사용자가 사진을 넣지 않을 경우 디폴트 사진이 존재함
+        originalBitmap = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.user_image)
 
         btnSignUp.setOnClickListener {
             if(etID.text.toString() == "" || etPassword.text.toString() == "" || etPasswordCheck.text.toString() == "" || etUserName.text.toString()==""){
@@ -66,6 +74,7 @@ class RegisterActivity : AppCompatActivity(), TextWatcher {
                 prefs.edit().putString("id", etID.text.toString()).apply()
                 prefs.edit().putString("pwd", etPassword.text.toString()).apply()
                 prefs.edit().putString("userName", etUserName.text.toString()).apply()
+                prefs.edit().putString("profileImage",encodeToBase64(originalBitmap)).apply()
 
                 var intent = Intent(this@RegisterActivity, InterestActivity::class.java)
                 startActivity(intent)
@@ -75,6 +84,22 @@ class RegisterActivity : AppCompatActivity(), TextWatcher {
         }
 
         tedPermission()
+    }
+
+    // bitmap to base64
+    private fun encodeToBase64(image: Bitmap?): String {
+
+        val byteStream = ByteArrayOutputStream()
+        image?.compress(Bitmap.CompressFormat.PNG, 100, byteStream)
+        val byteArr = byteStream.toByteArray()
+        val imageEncoded = Base64.encodeToString(byteArr, Base64.DEFAULT)
+
+        Dlog.d("image 값 : $image")
+        Dlog.d("byteArr 값 : $byteArr")
+        Dlog.d("imageEncoded 값 : $imageEncoded")
+
+        return imageEncoded
+
     }
 
     //갤러리 권한 요청
@@ -144,8 +169,6 @@ class RegisterActivity : AppCompatActivity(), TextWatcher {
                 cursor.moveToFirst()
 
                 tempFile = File(cursor.getString(columnIndex))
-
-                Dlog.e("여기들어옴")
             } finally {
                 cursor?.close()
             }
@@ -157,9 +180,9 @@ class RegisterActivity : AppCompatActivity(), TextWatcher {
     //갤러리에서 받아온 이미지 넣기
     private fun setImage(){
         val options = BitmapFactory.Options()
-        val originalBitmap = BitmapFactory.decodeFile(tempFile!!.absolutePath, options)
+        originalBitmap = BitmapFactory.decodeFile(tempFile!!.absolutePath, options)
 
-        Dlog.e("width:"+originalBitmap.width.toString()+"height:"+originalBitmap.height)
+        Dlog.e("width:"+ originalBitmap!!.width.toString()+"height:"+ originalBitmap!!.height)
         imgViewUserImg.background = ShapeDrawable(OvalShape())
         if (Build.VERSION.SDK_INT >= 21) {
             imgViewUserImg.clipToOutline = true
