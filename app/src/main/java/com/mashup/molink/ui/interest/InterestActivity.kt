@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.mashup.molink.R
 import com.mashup.molink.ui.main.MainActivity
 import com.mashup.molink.utils.Dlog
+import com.mashup.molink.utils.PrefUtil
 import kotlinx.android.synthetic.main.activity_interest.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,10 +33,6 @@ class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListene
                 break
             }
         }
-
-        var prefs = getSharedPreferences("Pref", Context.MODE_PRIVATE)
-
-        prefs.edit().putBoolean("isFirstRun",false).apply()
 
         if(check_sum>0){
             btnActivityInterestOk.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.black))
@@ -62,10 +59,6 @@ class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListene
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_interest)
 
-        var prefs = getSharedPreferences("Pref", Context.MODE_PRIVATE)
-        prefs.edit().putBoolean("isFirstRun", false).apply()
-        Dlog.e("isFirstrun " + prefs.getBoolean("isFirstRun", false))
-
         rvActivityInterest.layoutManager = GridLayoutManager(this, 3)
         rvActivityInterest.adapter = adapter
 
@@ -86,14 +79,9 @@ class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListene
                 }
             }
 
-            if(btnActivityInterestOk.isEnabled){
-                var prefs = getSharedPreferences("Pref", Context.MODE_PRIVATE)
-                prefs.edit().putBoolean("isFirstRun", true).apply()
-                Dlog.e("isFirstrun//" + prefs.getBoolean("isFirstRun", false))
+            PrefUtil.put(PrefUtil.PREF_IS_FIRST_RUN, true)
 
-            }
-
-            var intent = Intent(this@InterestActivity, MainActivity::class.java)
+            val intent = Intent(this@InterestActivity, MainActivity::class.java)
             intent.putExtra(MainActivity.KEY_INTERESTS, list)
             startActivity(intent)
             finish()
