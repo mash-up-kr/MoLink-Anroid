@@ -1,4 +1,4 @@
-package com.mashup.molink.ui.interest
+package com.mashup.molink.remote.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

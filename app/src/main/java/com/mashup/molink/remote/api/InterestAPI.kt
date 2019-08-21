@@ -1,6 +1,6 @@
 package com.mashup.molink.remote.api
 
-import com.mashup.molink.ui.interest.Model
+import com.mashup.molink.remote.model.Model
 import retrofit2.Call
 import retrofit2.http.GET
 

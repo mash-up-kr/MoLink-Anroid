@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.mashup.molink.R
 import com.mashup.molink.remote.RetrofitClient
 import com.mashup.molink.remote.model.Data
+import com.mashup.molink.remote.model.Model
 import com.mashup.molink.ui.main.MainActivity
 import com.mashup.molink.utils.Dlog
 import com.mashup.molink.utils.PrefUtil
