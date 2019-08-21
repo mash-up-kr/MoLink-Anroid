@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.mashup.molink.R
 import com.mashup.molink.ui.main.MainActivity
 import com.mashup.molink.ui.register.RegisterActivity
+import com.mashup.molink.utils.PrefUtil
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.btnSignUp
 
@@ -17,17 +18,15 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        var prefs = getSharedPreferences("Pref", Context.MODE_PRIVATE)
-
         //로그인 버튼 클릭 시
        btnLogin.setOnClickListener {
             if(etLoginID.text.toString() == "" || etLoginPassword.text.toString() == ""){
                 Toast.makeText(this@LoginActivity, "아이디와 비밀번호 모두 입력해주세요 :)", Toast.LENGTH_SHORT).show()
             } else {
-                if(etLoginID.text.toString()==prefs.getString("id", "") && etLoginPassword.text.toString()==prefs.getString("pwd", "")){
+                if(etLoginID.text.toString()==PrefUtil.get(PrefUtil.PREF_ID, "") && etLoginPassword.text.toString()==PrefUtil.get(PrefUtil.PREF_PWD, "")){
                     Toast.makeText(this@LoginActivity, "로그인 되었습니다 :)", Toast.LENGTH_SHORT).show()
-                    var intent = Intent(this@LoginActivity,MainActivity::class.java)
-                    prefs.edit().putBoolean("isLogin", true).apply()
+                    PrefUtil.put(PrefUtil.PREF_IS_LOGIN, true)
+                    val intent = Intent(this@LoginActivity,MainActivity::class.java)
                     startActivity(intent)
                     finish()
                 }else{

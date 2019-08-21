@@ -11,6 +11,10 @@ object PrefUtil {
 
     const val PREF_IS_LOGIN = "is_login"
 
+    const val PREF_ID = "id"
+
+    const val PREF_PWD = "pwd"
+
     private lateinit var pref: SharedPreferences
 
     fun getInstance(context: Context) {
