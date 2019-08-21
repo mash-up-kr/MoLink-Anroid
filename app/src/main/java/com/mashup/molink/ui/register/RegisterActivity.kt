@@ -27,6 +27,7 @@ import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.ShapeDrawable
 import android.util.Base64
 import com.mashup.molink.R
+import com.mashup.molink.utils.PrefUtil
 import java.io.ByteArrayOutputStream
 import java.util.regex.Pattern
 
@@ -68,12 +69,11 @@ class RegisterActivity : AppCompatActivity(), TextWatcher {
             else {
                 Toast.makeText(this@RegisterActivity, "회원가입 되었습니다 :)", Toast.LENGTH_SHORT).show()
 
-                var prefs = getSharedPreferences("Pref", Context.MODE_PRIVATE)
-                prefs.edit().putBoolean("isLogin", true).apply()
-                prefs.edit().putString("id", etID.text.toString()).apply()
-                prefs.edit().putString("pwd", etPassword.text.toString()).apply()
-                prefs.edit().putString("userName", etUserName.text.toString()).apply()
-                prefs.edit().putString("profileImage",encodeToBase64(originalBitmap)).apply()
+                PrefUtil.put(PrefUtil.PREF_IS_LOGIN, true)
+                PrefUtil.put(PrefUtil.PREF_ID, etID.text.toString())
+                PrefUtil.put(PrefUtil.PREF_PWD, etPassword.text.toString())
+                PrefUtil.put(PrefUtil.PREF_USER_NAME, etUserName.text.toString())
+                PrefUtil.put(PrefUtil.PREF_PROFILE_IMAGE, encodeToBase64(originalBitmap))
 
                 var intent = Intent(this@RegisterActivity, InterestActivity::class.java)
                 startActivity(intent)

@@ -15,6 +15,10 @@ object PrefUtil {
 
     const val PREF_PWD = "pwd"
 
+    const val PREF_USER_NAME = "user_name"
+
+    const val PREF_PROFILE_IMAGE = "profile_image"
+
     private lateinit var pref: SharedPreferences
 
     fun getInstance(context: Context) {
