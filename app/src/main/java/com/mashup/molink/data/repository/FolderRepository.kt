@@ -109,14 +109,14 @@ class FolderRepository(
                         folderDao.insert(it)
                     }
                 } else if(it.statusCode == StatusCode.ZEOR) {
-                    //TODO API 수정 필요
+                    //이미 등록된 유저인 경우
                     folderApi.getFoldersAll()
                         .subscribeOn(Schedulers.io())
                         .subscribe({ folders ->
                             Dlog.d("getFoldersAll : $folders")
                             if(folders.data.isNotEmpty()) {
                                 folders.data.forEach { folder ->
-                                    if(folder.color.isEmpty()) {
+                                    if(folder.color.isNullOrEmpty()) {
                                         val tempFolder = folder.copy(color = "#000000")
                                         folderDao.insert(tempFolder)
                                     } else {
