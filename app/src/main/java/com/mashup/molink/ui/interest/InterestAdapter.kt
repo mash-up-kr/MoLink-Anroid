@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import android.view.View
+import com.mashup.molink.remote.model.Data
 import com.mashup.molink.utils.Dlog
 import kotlinx.android.synthetic.main.item_interest.view.*
 

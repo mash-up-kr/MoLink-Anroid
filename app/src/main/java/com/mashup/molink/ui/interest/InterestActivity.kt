@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mashup.molink.R
+import com.mashup.molink.remote.RetrofitClient
+import com.mashup.molink.remote.model.Data
 import com.mashup.molink.ui.main.MainActivity
 import com.mashup.molink.utils.Dlog
 import com.mashup.molink.utils.PrefUtil
@@ -13,8 +15,6 @@ import kotlinx.android.synthetic.main.activity_interest.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListener {
@@ -46,13 +46,7 @@ class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListene
 
     }
 
-    var retrofit = Retrofit.Builder()
-        .baseUrl("http://ec2-52-79-252-3.ap-northeast-2.compute.amazonaws.com:8080")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    var service: InterestAPI = retrofit.create(InterestAPI::class.java!!)
-    var repos = service.getInterest()
+    var repos = RetrofitClient.getInterestAPI().getInterest()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
