@@ -7,6 +7,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.provider.Settings
 import com.mashup.molink.utils.Dlog
+import com.mashup.molink.utils.PrefUtil
 
 class BaseApplication: Application() {
 
@@ -25,6 +26,8 @@ class BaseApplication: Application() {
 
         androidId = Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID)
         Dlog.d("androidId : $androidId")
+
+        PrefUtil.getInstance(this)
     }
 
     /**
