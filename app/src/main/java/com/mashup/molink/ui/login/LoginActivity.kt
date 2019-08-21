@@ -1,16 +1,14 @@
 package com.mashup.molink.ui.login
 
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.mashup.molink.R
 import com.mashup.molink.ui.main.MainActivity
 import com.mashup.molink.ui.register.RegisterActivity
 import com.mashup.molink.utils.PrefUtil
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_login.btnSignUp
 
 class LoginActivity : AppCompatActivity() {
 
@@ -39,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
 
         //회원가입 버튼 클릭 시
         btnSignUp.setOnClickListener {
-            var intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
             finish()
         }
