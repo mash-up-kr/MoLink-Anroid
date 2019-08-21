@@ -66,7 +66,7 @@ class ShareActivity : AppCompatActivity() {
         //링크 저장 버튼 클릭시
         btnLinkSave.setOnClickListener {
 
-            /*var intent = Intent(this@ShareActivity, MainActivity::class.java)
+            /*var intent = Intent(this@ShareActivity, FollowFragment::class.java)
             intent.putExtra("sharedUrl", tvSharedUrl.text)
             intent.putExtra("sharedTitle", etSharedTitle.text)
             intent.putExtra("hashTags",hashTagsArray)

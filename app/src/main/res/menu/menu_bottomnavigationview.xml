@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/main"
+            android:icon="@android:drawable/ic_menu_search"
+            android:title="Main" />
+    <item
+            android:id="@+id/feed"
+            android:icon="@android:drawable/ic_menu_camera"
+            android:title="Feed" />
+    <item
+            android:id="@+id/follow"
+            android:icon="@android:drawable/ic_menu_call"
+            android:title="Follow" />
+</menu>

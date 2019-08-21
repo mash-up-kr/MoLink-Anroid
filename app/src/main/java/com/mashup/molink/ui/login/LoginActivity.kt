@@ -24,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
                 if(etLoginID.text.toString()==PrefUtil.get(PrefUtil.PREF_ID, "") && etLoginPassword.text.toString()==PrefUtil.get(PrefUtil.PREF_PWD, "")){
                     Toast.makeText(this@LoginActivity, "로그인 되었습니다 :)", Toast.LENGTH_SHORT).show()
                     PrefUtil.put(PrefUtil.PREF_IS_LOGIN, true)
-                    val intent = Intent(this@LoginActivity,MainActivity::class.java)
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()
                 }else{

@@ -8,6 +8,7 @@ import com.mashup.molink.R
 import com.mashup.molink.ui.interest.InterestActivity
 import com.mashup.molink.ui.login.LoginActivity
 import com.mashup.molink.ui.main.MainActivity
+import com.mashup.molink.ui.main.fragment.main.MainFragment
 import com.mashup.molink.utils.Dlog
 import com.mashup.molink.utils.PrefUtil
 

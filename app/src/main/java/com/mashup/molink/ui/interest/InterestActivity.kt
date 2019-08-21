@@ -10,6 +10,7 @@ import com.mashup.molink.remote.RetrofitClient
 import com.mashup.molink.remote.model.Data
 import com.mashup.molink.remote.model.Model
 import com.mashup.molink.ui.main.MainActivity
+import com.mashup.molink.ui.main.fragment.main.MainFragment
 import com.mashup.molink.utils.Dlog
 import com.mashup.molink.utils.PrefUtil
 import kotlinx.android.synthetic.main.activity_interest.*
@@ -27,22 +28,27 @@ class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListene
 
     override fun onClick(interest: Data) {
 
-        for(i in adapter.items){
-            if(i.check){
+        for (i in adapter.items) {
+            if (i.check) {
                 check_sum++
                 break
             }
         }
 
-        if(check_sum>0){
+        if (check_sum > 0) {
             btnActivityInterestOk.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.black))
-            btnActivityInterestOk.isEnabled=true
+            btnActivityInterestOk.isEnabled = true
 
-            check_sum=0
+            check_sum = 0
 
-        }else{
-            btnActivityInterestOk.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.cardview_shadow_start_color))
-            btnActivityInterestOk.isEnabled=false
+        } else {
+            btnActivityInterestOk.setBackgroundColor(
+                ContextCompat.getColor(
+                    applicationContext,
+                    R.color.cardview_shadow_start_color
+                )
+            )
+            btnActivityInterestOk.isEnabled = false
         }
 
     }
@@ -66,8 +72,8 @@ class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListene
             val list = ArrayList<String>()
             Dlog.e(adapter.getItem().size.toString())
 
-            for((index, value) in adapter.items.withIndex()){
-                if(value.check){
+            for ((index, value) in adapter.items.withIndex()) {
+                if (value.check) {
                     list.add(value.name!!)
                     Dlog.e(value.name)
                 }
@@ -76,7 +82,7 @@ class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListene
             PrefUtil.put(PrefUtil.PREF_IS_FIRST_RUN, true)
 
             val intent = Intent(this@InterestActivity, MainActivity::class.java)
-            intent.putExtra(MainActivity.KEY_INTERESTS, list)
+            intent.putExtra(MainFragment.KEY_INTERESTS, list)
             startActivity(intent)
             finish()
         }
@@ -87,12 +93,12 @@ class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListene
 
     private fun loadData() {
 
-        repos.enqueue(object : Callback<Model>{
+        repos.enqueue(object : Callback<Model> {
             override fun onResponse(call: Call<Model>, response: Response<Model>) {
-                if(response.isSuccessful) {
+                if (response.isSuccessful) {
                     val model = response.body()
                     Dlog.d("model : $model")
-                    if(model != null) {
+                    if (model != null) {
                         val items = model.data
                         adapter.setItem(items as ArrayList<Data>)
                     }
@@ -105,7 +111,6 @@ class InterestActivity : AppCompatActivity(), InterestAdapter.OnItemClickListene
             override fun onFailure(call: Call<Model>, t: Throwable) {
                 Dlog.d("t : ${t.message}")
             }
-
 
 
         })

@@ -1,4 +1,4 @@
-package com.mashup.molink.ui.main.adapter
+package com.mashup.molink.ui.main.fragment.main
 
 import android.graphics.Color
 import android.view.LayoutInflater
