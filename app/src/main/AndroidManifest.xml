@@ -17,13 +17,13 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".login.LoginActivity">
+        <activity android:name="com.mashup.molink.ui.login.LoginActivity">
 
         </activity>
-        <activity android:name=".register.RegisterActivity">
+        <activity android:name="com.mashup.molink.ui.register.RegisterActivity">
         </activity>
         <activity
-                android:name=".splash.SplashActivity"
+                android:name="com.mashup.molink.ui.splash.SplashActivity"
                 android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".share.ShareActivity"
+                android:name="com.mashup.molink.ui.share.ShareActivity"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
@@ -54,13 +54,13 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".detail.DetailActivity"
+                android:name="com.mashup.molink.ui.detail.DetailActivity"
                 android:screenOrientation="portrait"/>
         <activity
-                android:name=".interest.InterestActivity"
+                android:name="com.mashup.molink.ui.interest.InterestActivity"
                 android:screenOrientation="portrait"/>
         <activity
-                android:name=".main.MainActivity"
+                android:name="com.mashup.molink.ui.main.MainActivity"
                 android:screenOrientation="portrait"/>
     </application>
 
