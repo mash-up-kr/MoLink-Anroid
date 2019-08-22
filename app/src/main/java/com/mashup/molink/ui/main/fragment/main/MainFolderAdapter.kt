@@ -42,14 +42,15 @@ class MainFolderAdapter : RecyclerView.Adapter<MainFolderAdapter.FolderViewHolde
 
                 tvTitle.text = item.name
 
-                //수정 버튼
-                llModify.setOnClickListener {
-                    listener?.onItemClickModify(item)
-                }
-
                 //전체 버튼
                 itemView.setOnClickListener {
                     listener?.onItemClick(item)
+                }
+
+                //수정 버튼
+                itemView.setOnLongClickListener {
+                    listener?.onItemClickModify(item)
+                    true
                 }
             }
         }
@@ -104,7 +105,6 @@ class MainFolderAdapter : RecyclerView.Adapter<MainFolderAdapter.FolderViewHolde
 
         val ivFolderHead: ImageView = itemView.findViewById(R.id.ivItemMainFolderHead)
         val tvTitle: TextView = itemView.findViewById(R.id.tvItemMainFolderTitle)
-        val llModify: LinearLayout = itemView.findViewById(R.id.llItemMainFolderModify)
     }
 
     interface ItemClickListener {

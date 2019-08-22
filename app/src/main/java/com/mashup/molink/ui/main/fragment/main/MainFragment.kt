@@ -130,7 +130,7 @@ class MainFragment : Fragment(), MainFolderAdapter.ItemClickListener, ModifyFold
 
     private fun initRecyclerView() {
 
-        with(rvActivityMain) {
+        with(rvFragmentMain) {
             layoutManager = GridLayoutManager(context, 3)
             adapter = folderAdapter
         }
@@ -138,7 +138,7 @@ class MainFragment : Fragment(), MainFolderAdapter.ItemClickListener, ModifyFold
 
     private fun initButton() {
 
-        fabActivityMain.setOnClickListener {
+        fabFragmentMain.setOnClickListener {
             ModifyFolderDialog(context!!, null).apply {
                 setDialogClickListener(this@MainFragment)
             }.show()
@@ -160,10 +160,10 @@ class MainFragment : Fragment(), MainFolderAdapter.ItemClickListener, ModifyFold
     }
 
     private fun showProgress() {
-        pbActivityMain.visibility = View.VISIBLE
+        pbFragmentMain.visibility = View.VISIBLE
     }
 
     private fun hideProgress() {
-        pbActivityMain.visibility = View.GONE
+        pbFragmentMain.visibility = View.GONE
     }
 }
