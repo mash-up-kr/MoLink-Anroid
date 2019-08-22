@@ -3,14 +3,14 @@
 
     <item
             android:id="@+id/main"
-            android:icon="@android:drawable/ic_menu_search"
+            android:icon="@drawable/nav_main"
             android:title="Main" />
     <item
             android:id="@+id/feed"
-            android:icon="@android:drawable/ic_menu_camera"
+            android:icon="@drawable/nav_feed"
             android:title="Feed" />
     <item
             android:id="@+id/follow"
-            android:icon="@android:drawable/ic_menu_call"
+            android:icon="@drawable/nav_follow"
             android:title="Follow" />
 </menu>

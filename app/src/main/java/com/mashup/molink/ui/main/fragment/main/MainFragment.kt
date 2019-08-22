@@ -13,6 +13,7 @@ import com.mashup.molink.data.model.Folder
 import com.mashup.molink.ui.detail.DetailActivity
 import com.mashup.molink.ui.dialog.ModifyFolderDialog
 import com.mashup.molink.utils.Dlog
+import com.mashup.molink.utils.PrefUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -54,6 +55,7 @@ class MainFragment : Fragment(), MainFolderAdapter.ItemClickListener, ModifyFold
         super.onActivityCreated(savedInstanceState)
 
         getData()
+        initProfile()
         initRecyclerView()
         initButton()
         loadCategory()
@@ -126,6 +128,12 @@ class MainFragment : Fragment(), MainFolderAdapter.ItemClickListener, ModifyFold
             folderRepository.insertCategoryFolders(temp)
                 .also { compositeDisposable.add(it) }
         }
+    }
+
+    private fun initProfile() {
+
+        tvFragmentMainUserkName.text = PrefUtil.get(PrefUtil.PREF_USER_NAME, "")
+        tvFragmentMainInterest.text = "#메쉬업 #모링 #스터디 #배포"
     }
 
     private fun initRecyclerView() {

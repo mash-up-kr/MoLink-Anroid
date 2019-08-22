@@ -6,23 +6,199 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.main.fragment.main.MainFragment">
-    
-    <ImageView
-            android:id="@+id/ivFragmentMainTitle"
-            android:src="@drawable/main_top"
+
+    <!-- profile -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clFragmentMainProfile"
+            android:background="@drawable/drawable_dark_borrom_right_rad_32"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
+            android:layout_height="195dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- search -->
+        <ImageView
+                android:id="@+id/tvFragmentMainSearch"
+                android:src="@drawable/ic_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="18dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvFragmentMainProfile"/>
+
+        <!-- profile -->
+        <ImageView
+                android:id="@+id/tvFragmentMainProfile"
+                android:src="@drawable/ic_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/horizontal_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="82dp"/>
+
+        <ImageView
+                android:id="@+id/imageView1"
+                android:src="@drawable/drawable_very_light_pink_rad_20"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_marginStart="36dp"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_guideline"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+        <ImageView
+                android:src="@drawable/ic_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/imageView1"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView1"
+                app:layout_constraintStart_toStartOf="@+id/imageView1"
+                app:layout_constraintEnd_toEndOf="@+id/imageView1"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/vertical_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="112dp"/>
+
+        <!-- id -->
+        <TextView
+                android:id="@+id/tvFragmentMainUserkName"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="22dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_guideline"
+                app:layout_constraintStart_toStartOf="@+id/vertical_guideline"
+                tools:text="BlackJin"/>
+
+        <!-- interest -->
+        <TextView
+                android:id="@+id/tvFragmentMainInterest"
+                android:textColor="@color/white"
+                android:textSize="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvFragmentMainUserkName"
+                app:layout_constraintStart_toStartOf="@+id/vertical_guideline"
+                tools:text="#디자이너 #여행 #스터디"/>
+
+        <!-- divider -->
+        <FrameLayout
+                android:id="@+id/divider"
+                android:background="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="27dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvFragmentMainInterest"
+                app:layout_constraintStart_toEndOf="@+id/vertical_guideline"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- pen -->
+        <ImageView
+                android:src="@drawable/ic_pen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="27dp"
+                app:layout_constraintTop_toTopOf="@+id/tvFragmentMainInterest"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- 링크 -->
+        <LinearLayout
+                android:id="@+id/llFragmentMainLinkParent"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="13.5dp"
+                app:layout_constraintStart_toStartOf="@id/vertical_guideline"
+                app:layout_constraintTop_toBottomOf="@+id/divider">
+
+            <ImageView
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/icon_attached"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:text="총 저장된 링크"
+                    android:textSize="10dp"
+                    android:textColor="@color/very_light_pink"
+                    android:layout_marginEnd="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/tvFragmentMainLink"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/very_light_pink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="42개"/>
+
+        </LinearLayout>
+
+        <!-- 팔로워 -->
+        <LinearLayout
+                android:id="@+id/llFragmentMainFollowParent"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="13.5dp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toEndOf="@id/llFragmentMainLinkParent"
+                app:layout_constraintTop_toBottomOf="@+id/divider">
+
+            <ImageView
+                    android:layout_marginEnd="4dp"
+                    android:tint="@color/pig_pink"
+                    android:src="@drawable/icon_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:text="총 팔로워"
+                    android:textSize="10dp"
+                    android:textColor="@color/very_light_pink"
+                    android:layout_marginEnd="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/tvFragmentMainFollow"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/very_light_pink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="24명"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- folder list -->
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFragmentMain"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="45dp"
-            app:layout_constraintTop_toBottomOf="@+id/ivFragmentMainTitle"
+            app:layout_constraintTop_toBottomOf="@+id/clFragmentMainProfile"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
