@@ -11,7 +11,7 @@
             android:textSize="15dp"
             android:textColor="@color/black"
             android:padding="10dp"
-            android:background="@drawable/drawable_black_stroke_rad_4"
+            android:background="@drawable/drawable_black_stroke_rad_15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="title"/>
