@@ -134,6 +134,9 @@ class MainFragment : Fragment(), MainFolderAdapter.ItemClickListener, ModifyFold
 
         tvFragmentMainUserkName.text = PrefUtil.get(PrefUtil.PREF_USER_NAME, "")
         tvFragmentMainInterest.text = "#메쉬업 #모링 #스터디 #배포"
+
+        tvFragmentMainLink.text = "42개"
+        tvFragmentMainFollow.text = "12개"
     }
 
     private fun initRecyclerView() {
