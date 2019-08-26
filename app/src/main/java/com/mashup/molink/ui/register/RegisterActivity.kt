@@ -212,10 +212,10 @@ class RegisterActivity : AppCompatActivity(), TextWatcher {
             tvPasswordCheckValidation.text = ""
         }
 
-        //아이디 유효성 검사 : 영문 6자리 이상
+        //아이디 유효성 검사 : 영문 또는 숫자 6자리 이상
         if(etID.text.toString() != ""){
-            if(!Pattern.matches("^[a-zA-Z]*$", etID.text) || etID.text.length < 6){
-                tvIDValidation.text = "아이디는 영문 6자 이상이어야 합니다."
+            if(!Pattern.matches("^[a-zA-Z0-9]*$", etID.text) || etID.text.length < 6){
+                tvIDValidation.text = "아이디는 6자 이상이어야 합니다."
                 tvIDValidation.setTextColor(Color.RED)
 
                 idValidate = false
