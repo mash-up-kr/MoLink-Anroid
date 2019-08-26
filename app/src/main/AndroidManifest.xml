@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.mashup.molink">
 
+    <!--인터넷 권한-->
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!--카메라와 갤러리 권한-->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
             android:name=".BaseApplication"
@@ -12,10 +19,11 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            android:usesCleartextTraffic="true">
+            android:usesCleartextTraffic="true"
+            tools:targetApi="m">
 
-        <activity android:name=".splash.SplashActivity"
-                  android:screenOrientation="portrait">
+        <activity
+                android:name="com.mashup.molink.ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW"/>
@@ -24,9 +32,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".share.ShareActivity"
-                  android:screenOrientation="portrait"
-                  android:windowSoftInputMode="stateAlwaysHidden">
+        <activity
+                android:name="com.mashup.molink.ui.share.ShareActivity"
+                android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO"/>
 
@@ -34,24 +42,24 @@
 
                 <data android:scheme="sms"/>
                 <data android:scheme="smsto"/>
-            </intent-filter> <!-- filter for sending text or images; accepts SEND action and text or image data -->
+            </intent-filter>
+
+            <!-- filter for sending text or images; accepts SEND action and text or image data -->
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
+
                 <data android:mimeType="image/*"/>
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".detail.DetailActivity"
-                  android:screenOrientation="portrait"/>
-
-        <activity android:name=".interest.InterestActivity"
-                  android:screenOrientation="portrait"/>
-
-        <activity android:name=".main.MainActivity"
-                  android:screenOrientation="portrait"/>
+        <activity android:name="com.mashup.molink.ui.login.LoginActivity"/>
+        <activity android:name="com.mashup.molink.ui.register.RegisterActivity"/>
+        <activity android:name="com.mashup.molink.ui.interest.InterestActivity"/>
+        <activity android:name="com.mashup.molink.ui.detail.DetailActivity"/>
+        <activity android:name="com.mashup.molink.ui.main.MainActivity"/>
 
     </application>
 

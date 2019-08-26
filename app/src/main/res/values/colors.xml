@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">@color/dark</color> <!-- bottom nav -->
+    <color name="colorPrimaryDark">@color/dark</color> <!-- status bar -->
     <color name="colorAccent">#D81B60</color>
 
     <color name="black">#000000</color>
@@ -13,5 +13,9 @@
     <color name="lighter_purple">#956bf2</color>
     <color name="white">#ffffff</color>
     <color name="brown_grey">#1A999999</color>
+    <color name="dark">#2e3442</color>
+    <color name="very_light_pink">#c4c4c4</color>
+
+    <color name="white_gray">#f8f8f8</color>
 
 </resources>
